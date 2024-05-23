@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <% if (alerts.success) { %>
+      <% alerts.success.forEach(msg => { %>
+         
+        <div class="alert alert-success"><%= msg %></div>
+      <% }) %>
+    <% } %>
+
+    <% if (alerts.error) { %>
+      <% alerts.error.forEach(msg => { %>
+       <div class="alert alert-danger"><%= msg %></div>
+      <% }) %>
+  <% } %>
+
+  <header>
+    <nav>
+      <ul>
+        <% if(!currentUser) { %> 
+          <li><a href="/auth/signup">Signup</a></li>
+          <li><a href="/auth/login">Login</a></li>
+        <% } else { %> 
+        <li><a href="/auth/logout">Logout</a></li>
+        <li><a href="/profile">Profile</a></li>
+        <% } %> 
+      </ul>
+    </nav>
+  </header>
+    
+    <section class="contact" id="contact">
+
+        <h2 class="heading">Welcome to your <span>Profile!</span></h2>
+
+        <form action="/auth/login" method="POST">
+            <div class="input-box">
+                <h3>Name <span><%= name %>!</h3>
+                <h3>Email <span><%= email %>! </h3>
+            </div>
+        </form>
+    </section>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
