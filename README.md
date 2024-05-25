@@ -20,22 +20,44 @@ https://excalidraw.com/#json=vmVDnChu3kJT34AJRSpbp,d2nAkflCj85Uhd7vuxLkKA
 MODELS
 User:
 
-- Name
-- Email
-- Phone
-- Password
-- Points
+- name
+- id
+- email
+- phone
+- password
+- points
 
-SeasonBoard:
+Reviews:
 
-- Ranking
-- Points available
+- id
+- customer_id
+- product_id
+- rating
+- content
+- date
 
-Prize:
+Points:
 
-- Name
-- Image
-- Price
+- id
+- date
+- customer_id
+- amount
+- product_id
+
+Season:
+
+- id
+- number
+
+Products:
+
+- id
+- image
+- description
+- points
+- season_id
+
+![ERD Mock Ip](assets/img/ERD%20Mock%20Up.png)
 
 Inspiration:
 
