@@ -57,7 +57,7 @@ Products:
 - points
 - season_id
 
-![ERD Mock Ip](assets/img/ERD%20Mock%20Up.png)
+![ERD Mock Ip](assets/img/ERD-Mock-Up.png)
 
 Inspiration:
 
