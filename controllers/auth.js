@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
+// const expressLayouts = require("express-ejs-layouts");
 const passport = require("../config/passport-config");
+// router.use(expressLayouts);
 
 // import User model
 const { User } = require("../models");

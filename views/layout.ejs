@@ -10,11 +10,6 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <!-- box icons -->
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
@@ -28,8 +23,8 @@
 
     <header>
       <nav class="navbar">
-        <a class="navbar-brand" href="#">DailyPoints</a>
         <ul>
+          <li><a href="/">Home</a></li>
           <% if(!currentUser) { %>
           <li><a href="/auth/signup">Signup</a></li>
           <li><a href="/auth/login">Login</a></li>
@@ -41,23 +36,8 @@
       </nav>
     </header>
 
-    <section class="home" id="home">
-      <div class="home-content">
-        <h1>Earn Daily</h1>
-        <p>Review The latest Products and Earn Points</p>
-        <div class="social-media">
-          <i class="bx bx-package"></i>
-          <i class="bx bx-right-arrow-alt" id="media"></i>
-          <i class="bx bx-checkbox-checked"></i>
-          <i class="bx bx-right-arrow-alt" id="media"></i>
-          <i class="bx bx-coin"></i>
-        </div>
-        <a href="/auth/signup" class="btn">Sign Up</a>
-      </div>
-
-      <div class="home-img">
-        <img src="https://i.imgur.com/QkIa5tT.jpeg" alt="" />
-      </div>
+    <section class="contact" id="contact">
+      <h2 class="heading"><span>Homepage!</span></h2>
     </section>
   </body>
 </html>
