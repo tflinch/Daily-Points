@@ -9,6 +9,11 @@ router.get("/", isLoggedIn, (req, res) => {
   res.render("daily", { name, email, phone, _id });
 });
 
+router.get("/leaderboard", isLoggedIn, (req, res) => {
+  const { name, email, phone, _id } = req.user;
+  res.render("daily/leaderboard", {});
+});
+
 router.get("/product/:id", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;
   const { id } = req.params.id;

@@ -40,43 +40,23 @@
       </nav>
     </header>
 
-    <div class="container text-center profile">
-      <div class="row">
-    <div class="col">
-      <h2 class="heading">Latest <span>Products</span></h2>
-      <div class="home-img">
-        <img src="https://i.imgur.com/QkIa5tT.jpeg" alt="" />
-        <a href="/daily" class="btn">Start Your Review</a>
-      </div>
-    </div>
-    <div class="col">
-      <h2 class="heading">Profile <span>Stats</span></h2>
-      <div id="profile">
-        
-      <div class="input-box">
-        <i class='bx bx-info-circle' ></i>
-          <h3>Name: <span><%= name %>!</h3>
-          <h3>Email: <span><%= email %>! </h3>
-      </div>
-      <div class="input-box">
-        <i class="bx bx-coin"></i>
-        <h3>Points Earned: <span><%= name %>!</h3>
-        <h3>Streak: <span><%= email %>! </h3>
-      </div>
-      <div class="input-box">
-        <i class='bx bx-bar-chart-alt-2' ></i>
-        <h3>LeaderBoard: <span><%= name %>!</h3>
-        <h3>Top 3 reviewers: <span><%= name %>! </h3>
-      </div>
-      <div class="input-box">
-        <i class='bx bx-edit' ></i>
-        <h3>Total Reviews: <span><%= name %>!</h3>
-        <h3>Most Recent Product: <span><%= email %>! </h3>
-         <a href="/fruits/edit" class="btn">Edit</a>
-          <a href="/fruits/delete" class="btn">Delete</a>
+    <section class="timeline">
+      <div class="timeline-row">
+        <div class="timeline-column">
+          <h2 class="title">
+            <span class="title-veggies" style="--i: 1">LeaderBoard</span>
+          </h2>
+          <div class="timeline-box">
+            <div class="timeline-content">
+              <div class="content">
+                <div class="year"><i class="bx bx-trophy"></i> # 1</div>
+                <h3>User: <span>Name</span></h3>
+                <p>Total Points: <span>5000</span></p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    </div>
+    </section>
   </body>
 </html>
