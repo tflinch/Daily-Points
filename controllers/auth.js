@@ -78,5 +78,16 @@ router.post(
   }),
   (req, res) => {}
 );
+// Coming
+// router.put(
+//   "/profile",
+//   passport.authenticate("local", {
+//     successRedirect: "/profile",
+//     failureRedirect: "/auth/login",
+//     successFlash: "Account Updated",
+//     failureFlash: "Account Update Failed",
+//   }),
+//   (req, res) => {}
+// );
 
 module.exports = router;
