@@ -3,17 +3,16 @@ const express = require("express");
 const app = express();
 const flash = require("connect-flash");
 const session = require("express-session");
-// const expressLayouts = require("express-ejs-layouts");
+const methodOverride = require("method-override");
 const passport = require("./config/passport-config");
 const isLoggedIn = require("./middleware/isLoggedIn");
 const SECRET_SESSION = process.env.SECRET_SESSION;
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // import model
 const { User } = require("./models");
 
-// Set Templating Engine
-// app.use(expressLayouts);
+app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + "/public"));

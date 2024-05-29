@@ -45,13 +45,14 @@
       <h4 class="heading">Product: <span>Name</span></h4>
       <div class="home-img">
         <img src="https://i.imgur.com/QkIa5tT.jpeg" alt="" />
-        <p>Points</p>
+        <p>Points Earned: 855</p>
+        <p>Season: 0</p>
         <p>
-          Description: Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Your Review: Lorem ipsum dolor sit amet consectetur adipisicing elit.
           Culpa, sint!
         </p>
       </div>
-      <form action="/daily/product" method="POST">
+      <form action="/daily/product/:id/?_method=PUT" method="POST">
         <div class="input-box">
           <label for="number">What would rate this item?</label>
           <input
@@ -79,7 +80,7 @@
           class="item"
           autocomplete="off"
         ></textarea>
-        <input type="submit" value="New Review" class="btn" />
+        <input type="submit" value="update" class="btn" />
       </form>
     </div>
   </body>
