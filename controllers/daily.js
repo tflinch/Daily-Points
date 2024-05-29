@@ -20,6 +20,12 @@ router.get("/product/:id/edit", isLoggedIn, (req, res) => {
   let idParsed = parseInt(req.params.id);
   res.render("daily/edit", {});
 });
+router.get("/product/:id/delete", isLoggedIn, (req, res) => {
+  const { name, email, phone, _id } = req.user;
+  const { id } = req.params.id;
+  let idParsed = parseInt(req.params.id);
+  res.render("daily/delete", {});
+});
 
 router.post("/product", isLoggedIn, (req, res) => {
   console.log("--- FORM BODY \n", req.body);
@@ -39,6 +45,12 @@ router.put("/product/:id", isLoggedIn, (req, res) => {
   //     req.body.readyToEat = false;
   //   }
   //   fruits[parseInt(req.params.id)] = req.body;
+  res.redirect("/profile");
+});
+
+router.delete("/product/:id", isLoggedIn, (req, res) => {
+  console.log("----Delete Product-------- \n", req.body);
+
   res.redirect("/profile");
 });
 
