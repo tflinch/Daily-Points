@@ -43,10 +43,15 @@
     <div class="container text-center profile">
       <div class="row">
     <div class="col">
-      <h2 class="heading">Latest <span>Products</span></h2>
+      <h2 class="heading">Update <span>Products</span></h2>
       <div class="home-img">
         <img src="https://i.imgur.com/QkIa5tT.jpeg" alt="" />
-        <a href="/daily" class="btn">Start Your Review</a>
+        <a href="/daily" class="btn">Help!</a>
+      </div>
+      <h2 class="heading">Review <span>Products</span></h2>
+      <div class="home-img">
+        <img src="https://i.imgur.com/QkIa5tT.jpeg" alt="" />
+        <a href="/daily" class="btn">Review!</a>
       </div>
     </div>
     <div class="col">
@@ -71,6 +76,13 @@
       <div class="input-box">
         <i class='bx bx-edit' ></i>
         <h3>Total Reviews: <span><%= name %>!</h3>
+        <h3>Most Recent Review: <span><%= email %>! </h3>
+         <a href="/fruits/edit" class="btn">Edit</a>
+          <a href="/fruits/delete" class="btn">Delete</a>
+        </div>
+      <div class="input-box">
+        <i class='bx bx-edit' ></i>
+        <h3>Total Products: <span><%= name %>!</h3>
         <h3>Most Recent Product: <span><%= email %>! </h3>
          <a href="/fruits/edit" class="btn">Edit</a>
           <a href="/fruits/delete" class="btn">Delete</a>
