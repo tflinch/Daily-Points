@@ -9,25 +9,25 @@ router.get("/", isLoggedIn, (req, res) => {
   res.render("review", { name, email, phone, _id });
 });
 
-router.get("/review/:id", isLoggedIn, (req, res) => {
+router.get("/product/:id", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;
   const { id } = req.params.id;
   res.render("review/post", {});
 });
-router.get("/review/:id/edit", isLoggedIn, (req, res) => {
+router.get("/product/:id/edit", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;
   const { id } = req.params.id;
   let idParsed = parseInt(req.params.id);
   res.render("review/edit", {});
 });
-router.get("/review/:id/delete", isLoggedIn, (req, res) => {
+router.get("/product/:id/delete", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;
   const { id } = req.params.id;
   let idParsed = parseInt(req.params.id);
-  res.render("review/delete", {});
+  res.render("/review/delete", {});
 });
 
-router.post("/review", isLoggedIn, (req, res) => {
+router.post("/product", isLoggedIn, (req, res) => {
   console.log("--- FORM BODY \n", req.body);
   //   if (req.body.readyToEat === "on") {
   //     req.body.readyToEat = true;
@@ -37,7 +37,7 @@ router.post("/review", isLoggedIn, (req, res) => {
   res.redirect("/profile");
 });
 
-router.put("/review/:id", isLoggedIn, (req, res) => {
+router.put("/product/:id", isLoggedIn, (req, res) => {
   console.log("-----Update Product--------- \n", req.body);
   //   if (req.body.readyToEat === "on") {
   //     req.body.readyToEat = true;
@@ -48,7 +48,7 @@ router.put("/review/:id", isLoggedIn, (req, res) => {
   res.redirect("/profile");
 });
 
-router.delete("/review/:id", isLoggedIn, (req, res) => {
+router.delete("/product/:id", isLoggedIn, (req, res) => {
   console.log("----Delete Product-------- \n", req.body);
 
   res.redirect("/profile");
