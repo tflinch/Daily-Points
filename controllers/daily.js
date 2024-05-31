@@ -8,27 +8,21 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 router.get("/", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;
   axios
-    .get("https://api.escuelajs.co/api/v1/products")
+    .get("https://fakestoreapi.com/products/")
     .then((response) => {
-      // console.log("API Working");
-      // console.log(response.data[0].title);
-      // const id = response.data[0].id;
-      // const title = response.data[0].title;
-      // const points = response.data[0].price;
-      // const image = response.data[0].images[0];
-      // const description = response.data[0].description;
-      // const product = { id, title, points, image, description, seasonId };
-      // Product.create(product)
-      //   .then((product) => {
-      //     console.log("-------NEW PRODUCT-------\n", product);
-      //   })
-      //   .catch((error) => console.log(error));
-      console.log(response.data);
+      // console.log(response.data);
+      const productsArray = response.data.map((product) => ({
+        id: product.id,
+        title: product.title,
+        points: product.price,
+        img: product.image,
+        description: product.description,
+      }));
+      res.render("daily", { productArray: productsArray });
     })
     .catch((error) => {
       console.log(error);
     });
-  res.render("daily", { name, email, phone, _id });
 });
 
 router.get("/leaderboard", isLoggedIn, (req, res) => {
@@ -38,8 +32,22 @@ router.get("/leaderboard", isLoggedIn, (req, res) => {
 
 router.get("/product/:id", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;
-  const { id } = req.params.id;
-  res.render("daily/product", {});
+  const { id } = req.params;
+  axios
+    .get(`https://fakestoreapi.com/products/${id}`)
+    .then((item) => {
+      console.log(item);
+      const product = {
+        id: item.data.id,
+        title: item.data.title,
+        points: item.data.price,
+        img: item.data.image,
+        description: item.data.description,
+      };
+
+      res.render("daily/product", { product: product });
+    })
+    .catch((error) => console.log(error));
 });
 router.get("/product/:id/edit", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;
