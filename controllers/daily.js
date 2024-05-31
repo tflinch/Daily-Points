@@ -1,11 +1,33 @@
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
 
 // const isLoggedIn = require("./middleware/isLoggedIn");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
 router.get("/", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;
+  axios
+    .get("https://api.escuelajs.co/api/v1/products")
+    .then((response) => {
+      // console.log("API Working");
+      // console.log(response.data[0].title);
+      // const id = response.data[0].id;
+      // const title = response.data[0].title;
+      // const points = response.data[0].price;
+      // const image = response.data[0].images[0];
+      // const description = response.data[0].description;
+      // const product = { id, title, points, image, description, seasonId };
+      // Product.create(product)
+      //   .then((product) => {
+      //     console.log("-------NEW PRODUCT-------\n", product);
+      //   })
+      //   .catch((error) => console.log(error));
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   res.render("daily", { name, email, phone, _id });
 });
 
