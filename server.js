@@ -43,6 +43,7 @@ app.get("/", (req, res) => {
 // import auth routes
 app.use("/auth", require("./controllers/auth"));
 app.use("/daily", require("./controllers/daily"));
+app.use("/review", require("./controllers/review"));
 // app.use('/pokemon', require('./controllers/pokemon'));
 // app.use('/', require('./controllers/pokemon'));
 
