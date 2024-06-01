@@ -49,6 +49,7 @@
       <form action="/daily/product" method="POST">
         <div class="input-box">
           <label for="title">New Product Name:</label>
+          <input type="hidden" name="id" value="<%=product.id%>" />
           <input
             type="text"
             placeholder="<%=product.title%>"
@@ -64,6 +65,7 @@
             placeholder="<%=product.points%>"
             required
           />
+          <input type="hidden" name="imgage" value="<%=product.img%>" />
         </div>
         <textarea
           name="description"
@@ -74,6 +76,7 @@
           class="item"
           autocomplete="off"
         ></textarea>
+
         <input type="submit" value="update" class="btn" />
       </form>
     </div>

@@ -1,9 +1,15 @@
+require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
+const mongoose = require("mongoose");
+const SEASON = process.env.SEASON_NUMBER;
 
 // const isLoggedIn = require("./middleware/isLoggedIn");
 const isLoggedIn = require("../middleware/isLoggedIn");
+
+//Data Import
+const { Product } = require("../models");
 
 router.get("/", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;
@@ -94,8 +100,21 @@ router.get("/product/:id/delete", isLoggedIn, (req, res) => {
 
 router.post("/product", isLoggedIn, (req, res) => {
   console.log("--- FORM BODY \n", req.body);
-
-  res.redirect("/profile");
+  const { id, title, points, image, description } = req.body;
+  const product = {
+    id,
+    title,
+    points,
+    image,
+    description,
+    season_id: SEASON,
+  };
+  Product.create(product)
+    .then((response) => {
+      console.log("-----Create /product \n", response);
+      res.redirect("/profile");
+    })
+    .catch((error) => console.log(error));
 });
 
 router.put("/product/:id", isLoggedIn, (req, res) => {

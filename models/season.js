@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const seasonSchema = new mongoose.Schema(
   {
-    number: Number,
+    season: Number,
   },
   { timestamps: true }
 );
