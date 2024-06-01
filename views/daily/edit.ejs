@@ -42,13 +42,14 @@
     <div class="container text-center contact">
       <h4 class="heading"><span><%=product.title%></span></h4>
       <div class="home-img">
-        <img src="<%=product.img %>" alt="" />
+        <img src="<%=product.image %>" alt="" />
         <p><%=product.points %></p>
         <p><%=product.description %></p>
       </div>
       <form action="/daily/product/:id/?_method=PUT" method="POST">
         <div class="input-box">
-          <label for="title">New Product Name:</label>
+          <label for="title">Edit Product Name:</label>
+          <input type="hidden" name="id" value="<%=product.id%>" />
           <input
             type="text"
             placeholder="<%=product.title%>"
@@ -57,13 +58,14 @@
           />
         </div>
         <div class="input-box">
-          <label for="points">New Product Points:</label>
+          <label for="points">Edit Product Points:</label>
           <input
             type="number"
             name="points"
             placeholder="<%=product.points%>"
             required
           />
+          <input type="hidden" name="imgage" value="<%=product.img%>" />
         </div>
         <textarea
           name="description"

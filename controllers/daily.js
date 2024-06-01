@@ -21,7 +21,7 @@ router.get("/", isLoggedIn, (req, res) => {
         id: product.id,
         title: product.title,
         points: product.price,
-        img: product.image,
+        image: product.image,
         description: product.description,
       }));
       res.render("daily", { productArray: productsArray });
@@ -47,7 +47,7 @@ router.get("/product/:id", isLoggedIn, (req, res) => {
         id: item.data.id,
         title: item.data.title,
         points: item.data.price,
-        img: item.data.image,
+        image: item.data.image,
         description: item.data.description,
       };
 
@@ -65,7 +65,7 @@ router.get("/product/:id/create", isLoggedIn, (req, res) => {
         id: item.data.id,
         title: item.data.title,
         points: item.data.price,
-        img: item.data.image,
+        image: item.data.image,
         description: item.data.description,
       };
 
@@ -73,23 +73,21 @@ router.get("/product/:id/create", isLoggedIn, (req, res) => {
     })
     .catch((error) => console.log(error));
 });
-router.get("/product/:id/edit", isLoggedIn, (req, res) => {
+router.get("/product/:id/edit", isLoggedIn, async (req, res) => {
   const { name, email, phone, _id } = req.user;
-  const { id } = req.params;
-  axios
-    .get(`https://fakestoreapi.com/products/${id}`)
-    .then((item) => {
-      const product = {
-        id: item.data.id,
-        title: item.data.title,
-        points: item.data.price,
-        img: item.data.image,
-        description: item.data.description,
-      };
+  const { id } = parseInt(req.params);
+  try {
+    // Fetch the updated product
+    const updatedProduct = await Product.findOne(id).sort({
+      createdAt: -1,
+    });
 
-      res.render("daily/edit", { product: product });
-    })
-    .catch((error) => console.log(error));
+    // Render the edit page with the updated product
+    res.render("daily/edit", { product: updatedProduct });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 router.get("/product/:id/delete", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;
@@ -118,15 +116,20 @@ router.post("/product", isLoggedIn, (req, res) => {
     .catch((error) => console.log(error));
 });
 
-router.put("/product/:id", isLoggedIn, (req, res) => {
+router.put("/product/:id", isLoggedIn, async (req, res) => {
   console.log("-----Update Product--------- \n", req.body);
-  //   if (req.body.readyToEat === "on") {
-  //     req.body.readyToEat = true;
-  //   } else {
-  //     req.body.readyToEat = false;
-  //   }
-  //   fruits[parseInt(req.params.id)] = req.body;
-  res.redirect("/profile");
+  const { name, email, phone, _id } = req.user;
+  const { id } = req.body;
+  const findId = parseInt(req.params.id);
+  try {
+    // Find and update the product by ID
+    await Product.updateOne({ id, user_id: _id }, req.body);
+    // Render the edit page with the updated product
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 router.delete("/product/:id", isLoggedIn, (req, res) => {
