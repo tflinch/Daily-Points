@@ -39,44 +39,38 @@
         </ul>
       </nav>
     </header>
-    <p class="text-center">4 reveiws left</p>
-
     <div class="container text-center contact">
-      <h4 class="heading">Product: <span>Name</span></h4>
+      <h4 class="heading"><span><%=product.title%></span></h4>
       <div class="home-img">
-        <img src="https://i.imgur.com/QkIa5tT.jpeg" alt="" />
-        <p>Points Earned: 855</p>
-        <p>Season: 0</p>
-        <p>
-          Your Review: Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Culpa, sint!
-        </p>
+        <img src="<%=product.img %>" alt="" />
+        <p><%=product.points %></p>
+        <p><%=product.description %></p>
       </div>
       <form action="/daily/product/:id/?_method=PUT" method="POST">
         <div class="input-box">
-          <label for="number">What would rate this item?</label>
+          <label for="title">New Product Name:</label>
           <input
-            type="number"
-            placeholder="1-5"
-            name="rating"
-            max="5"
-            min="1"
+            type="text"
+            placeholder="<%=product.title%>"
+            name="title"
             required
           />
         </div>
         <div class="input-box">
-          <label for="purchase">Would you buy?</label>
-          <select name="purchase" id="purchase">
-            <option value="yes">yes</option>
-            <option value="no">no</option>
-          </select>
+          <label for="points">New Product Points:</label>
+          <input
+            type="number"
+            name="points"
+            placeholder="<%=product.points%>"
+            required
+          />
         </div>
         <textarea
-          name="content"
+          name="description"
           id="message"
           cols="30"
           rows="10"
-          placeholder="Your Message"
+          placeholder="New description"
           class="item"
           autocomplete="off"
         ></textarea>

@@ -49,11 +49,23 @@ router.get("/product/:id", isLoggedIn, (req, res) => {
     })
     .catch((error) => console.log(error));
 });
-router.get("/product/:id/edit", isLoggedIn, (req, res) => {
+router.get("/product/:id/create", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;
-  const { id } = req.params.id;
-  let idParsed = parseInt(req.params.id);
-  res.render("daily/edit", {});
+  const { id } = req.params;
+  axios
+    .get(`https://fakestoreapi.com/products/${id}`)
+    .then((item) => {
+      const product = {
+        id: item.data.id,
+        title: item.data.title,
+        points: item.data.price,
+        img: item.data.image,
+        description: item.data.description,
+      };
+
+      res.render("daily/edit", { product: product });
+    })
+    .catch((error) => console.log(error));
 });
 router.get("/product/:id/delete", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;

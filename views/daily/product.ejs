@@ -39,45 +39,18 @@
         </ul>
       </nav>
     </header>
-    <p class="text-center">4 Products left</p>
-
     <div class="container text-center contact">
-      <h4 class="heading">Product: <span><%=product.title %></span></h4>
+      <h4 class="heading"><span><%=product.title %></span></h4>
       <div class="home-img">
         <img src="<%=product.img %>" alt="" />
         <p><%=product.points %></p>
         <p><%=product.description %></p>
+        <div>
+          <a href="/daily/product/<%=product.id%>/create" class="btn"
+            >Earn points
+          </a>
+        </div>
       </div>
-      <form action="/daily/product" method="POST">
-        <div class="input-box">
-          <label for="number">What would rate this item?</label>
-          <input
-            type="number"
-            placeholder="1-5"
-            name="rating"
-            max="5"
-            min="1"
-            required
-          />
-        </div>
-        <div class="input-box">
-          <label for="purchase">Would you buy?</label>
-          <select name="purchase" id="purchase">
-            <option value="yes">yes</option>
-            <option value="no">no</option>
-          </select>
-        </div>
-        <textarea
-          name="content"
-          id="message"
-          cols="30"
-          rows="10"
-          placeholder="Your Message"
-          class="item"
-          autocomplete="off"
-        ></textarea>
-        <input type="submit" value="New Review" class="btn" />
-      </form>
     </div>
   </body>
 </html>
