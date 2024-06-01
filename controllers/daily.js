@@ -89,11 +89,21 @@ router.get("/product/:id/edit", isLoggedIn, async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-router.get("/product/:id/delete", isLoggedIn, (req, res) => {
+router.get("/product/:id/delete", isLoggedIn, async (req, res) => {
   const { name, email, phone, _id } = req.user;
-  const { id } = req.params.id;
-  let idParsed = parseInt(req.params.id);
-  res.render("daily/delete", {});
+  const { id } = parseInt(req.params);
+  try {
+    // Fetch the updated product
+    const updatedProduct = await Product.findOne(id).sort({
+      createdAt: -1,
+    });
+
+    // Render the edit page with the updated product
+    res.render("daily/delete", { product: updatedProduct });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 router.post("/product", isLoggedIn, (req, res) => {
@@ -132,10 +142,20 @@ router.put("/product/:id", isLoggedIn, async (req, res) => {
   }
 });
 
-router.delete("/product/:id", isLoggedIn, (req, res) => {
+router.delete("/product/:id", isLoggedIn, async (req, res) => {
   console.log("----Delete Product-------- \n", req.body);
-
-  res.redirect("/profile");
+  const { name, email, phone, _id } = req.user;
+  const { id } = req.body;
+  const findId = parseInt(req.params.id);
+  try {
+    // Find and update the product by ID
+    await Product.deleteOne({ id, user_id: _id }, req.body);
+    // Render the edit page with the updated product
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 module.exports = router;
