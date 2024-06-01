@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema(
     image: String,
     description: String,
     season_id: { type: mongoose.Schema.Types.ObjectId, ref: "Season" },
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   {
     timestamps: true,

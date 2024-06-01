@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 3001;
 
 // import model
 const { User } = require("./models");
+const { Product } = require("./models");
 
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
@@ -48,9 +49,23 @@ app.use("/review", require("./controllers/review"));
 // app.use('/', require('./controllers/pokemon'));
 
 // --- AUTHENTICATED ROUTE: go to user profile page ---
-app.get("/profile", isLoggedIn, (req, res) => {
-  const { name, email, phone } = req.user;
-  res.render("profile", { name, email, phone });
+app.get("/profile", isLoggedIn, async (req, res) => {
+  const { name, email, phone, _id } = req.user;
+  try {
+    const foundProduct = await Product.findOne({ user_id: _id }).sort({
+      createdAt: -1,
+    });
+    const totalProducts = await Product.countDocuments({ user_id: _id });
+    res.render("profile", {
+      name,
+      email,
+      phone,
+      product: foundProduct,
+      totalProducts,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 // any authenticated route will need to have isLoggedIn before controller

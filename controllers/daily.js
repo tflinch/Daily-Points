@@ -108,6 +108,7 @@ router.post("/product", isLoggedIn, (req, res) => {
     image,
     description,
     season_id: SEASON,
+    user_id: req.user._id,
   };
   Product.create(product)
     .then((response) => {
