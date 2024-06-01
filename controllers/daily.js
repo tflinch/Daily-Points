@@ -63,6 +63,24 @@ router.get("/product/:id/create", isLoggedIn, (req, res) => {
         description: item.data.description,
       };
 
+      res.render("daily/create", { product: product });
+    })
+    .catch((error) => console.log(error));
+});
+router.get("/product/:id/edit", isLoggedIn, (req, res) => {
+  const { name, email, phone, _id } = req.user;
+  const { id } = req.params;
+  axios
+    .get(`https://fakestoreapi.com/products/${id}`)
+    .then((item) => {
+      const product = {
+        id: item.data.id,
+        title: item.data.title,
+        points: item.data.price,
+        img: item.data.image,
+        description: item.data.description,
+      };
+
       res.render("daily/edit", { product: product });
     })
     .catch((error) => console.log(error));
@@ -76,11 +94,7 @@ router.get("/product/:id/delete", isLoggedIn, (req, res) => {
 
 router.post("/product", isLoggedIn, (req, res) => {
   console.log("--- FORM BODY \n", req.body);
-  //   if (req.body.readyToEat === "on") {
-  //     req.body.readyToEat = true;
-  //   } else {
-  //     req.body.readyToEat = false;
-  //   }
+
   res.redirect("/profile");
 });
 
