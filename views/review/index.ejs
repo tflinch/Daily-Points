@@ -40,46 +40,24 @@
       </nav>
     </header>
 
-    <h1 class="heading">Latest Vendor Item <span>Products</span></h1>
-    
+    <h1 class="heading">Latest Items to <span>Review</span></h1>
     <div class="container text-center profile">
       <div class="row">
-    <div class="col">
-      <h4 class="heading">Product: <span>Name</span></h4>
-      <div class="home-img">
-        <img src="https://i.imgur.com/QkIa5tT.jpeg" alt="" />
-        <p>Points</p>
-        <p>Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, sint!</p>
-        <a href="/daily/product/:id" class="btn">Start Your Review</a>
+        <% for (let i = 0; i < 4; i++) {%> <% let product = products[i] %>
+
+        <div class="col">
+          <h4 class="heading"><span><%=product.title %></span></h4>
+          <div class="home-img">
+            <img src="<%=product.image %>" alt="" />
+            <p><%=product.points %></p>
+            <p><%=product.description %></p>
+            <a href="/review/product/<%=product.id %>" class="btn"
+              >Create new product review
+            </a>
+          </div>
+        </div>
+        <% } %>
       </div>
-    </div>
-    <div class="col">
-      <h4 class="heading">Product: <span>Name</span></h4>
-      <div class="home-img">
-        <img src="https://i.imgur.com/QkIa5tT.jpeg" alt="" />
-        <p>Points</p>
-        <p>Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, sint!</p>
-        <a href="/daily/product/:id" class="btn">Start Your Review</a>
-      </div>
-    </div>
-    <div class="col">
-      <h4 class="heading">Product: <span>Name</span></h4>
-      <div class="home-img">
-        <img src="https://i.imgur.com/QkIa5tT.jpeg" alt="" />
-        <p>Points</p>
-        <p>Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, sint!</p>
-        <a href="/daily/product/:id" class="btn">Start Your Review</a>
-      </div>
-    </div>
-    <div class="col">
-      <h4 class="heading">Product: <span>Name</span></h4>
-      <div class="home-img">
-        <img src="https://i.imgur.com/QkIa5tT.jpeg" alt="" />
-        <p>Points</p>
-        <p>Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, sint!</p>
-        <a href="/dailypoints" class="btn">Start Your Review</a>
-      </div>
-    </div>
     </div>
   </body>
 </html>
