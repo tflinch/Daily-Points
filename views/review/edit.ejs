@@ -40,48 +40,64 @@
       </nav>
     </header>
     <div class="container text-center contact">
-      <h4 class="heading"><span><%=product.title %></span></h4>
+      <h4 class="heading"><span><%= product.title %></span></h4>
       <div class="home-img">
-        <img src="<%=product.image %>" alt="" />
-        <p><%=product.points %></p>
-        <p><%=product.description %></p>
-        <form action="/review/product" method="POST">
-          <div class="input-box">
-            <input
-              type="hidden"
-              name="customer_id"
-              value="<%=customer_id._id%>"
-            />
-            <input type="hidden" name="product_id" value="<%=product._id%>" />
-            <label for="number">What would rate this item?</label>
-            <input
-              type="number"
-              placeholder="1-5"
-              name="rating"
-              max="5"
-              min="1"
-              required
-            />
-          </div>
-          <div class="input-box">
-            <label for="purchase">Would you buy?</label>
-            <select name="purchase" id="purchase">
-              <option value="yes">yes</option>
-              <option value="no">no</option>
-            </select>
-          </div>
-          <textarea
-            name="content"
-            id="message"
-            cols="30"
-            rows="10"
-            placeholder="Your Message"
-            class="item"
-            autocomplete="off"
-          ></textarea>
-          <input type="submit" value="New Review" class="btn" />
-        </form>
+        <img
+          src="<%= product.image %>"
+          alt=""
+          class="img-fluid mx-auto d-block"
+        />
       </div>
+      <div>
+        <h2>Review for <%= product.title %></h2>
+        <p>Rating: <%= review.rating %></p>
+        <p>Your Review: <%= review.content %></p>
+        <% if (review.purchase) { %>
+        <label>Would you buy again? Yes</label>
+        <% } else { %>
+        <label>Would you buy again? No</label>
+        <% } %>
+      </div>
+      <form
+        action="/review/product/<%= product._id %>?_method=PUT"
+        method="POST"
+      >
+        <div class="input-box">
+          <input
+            type="hidden"
+            name="customer_id"
+            value="<%= customer_id._id %>"
+          />
+          <input type="hidden" name="product_id" value="<%= product._id %>" />
+          <label for="number">What would you rate this item?</label>
+          <input
+            type="number"
+            placeholder="1-5"
+            name="rating"
+            max="5"
+            min="1"
+            required
+            class="form-control"
+          />
+        </div>
+        <div class="input-box">
+          <label for="purchase">Would you buy?</label>
+          <select name="purchase" id="purchase" class="form-control">
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+          </select>
+        </div>
+        <textarea
+          name="content"
+          id="message"
+          cols="30"
+          rows="10"
+          placeholder="Your Message"
+          class="form-control item"
+          autocomplete="off"
+        ></textarea>
+        <input type="submit" value="Edit Your Review" class="btn" />
+      </form>
     </div>
   </body>
 </html>

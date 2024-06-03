@@ -79,8 +79,7 @@ router.get("/product/:id/create", isLoggedIn, async (req, res) => {
 });
 router.get("/product/:id/edit", isLoggedIn, async (req, res) => {
   const { name, email, phone, _id } = req.user;
-  const { id } = req.params; // Extract ID from params
-  console.log(id);
+  const { id } = req.params;
 
   try {
     // Fetch the product by its numeric ID
@@ -126,15 +125,29 @@ router.post("/product", isLoggedIn, async (req, res) => {
   }
 });
 
-router.put("/product/:id", isLoggedIn, (req, res) => {
-  console.log("-----Update Product--------- \n", req.body);
-  //   if (req.body.readyToEat === "on") {
-  //     req.body.readyToEat = true;
-  //   } else {
-  //     req.body.readyToEat = false;
-  //   }
-  //   fruits[parseInt(req.params.id)] = req.body;
-  res.redirect("/profile");
+router.put("/product/:id", isLoggedIn, async (req, res) => {
+  console.log("-----Update Review--------- \n", req.body);
+  const { id } = req.params; // Extract ID from URL
+  const { name, email, phone, _id } = req.user;
+
+  try {
+    // Find and update the review by product_id and customer_id
+    const result = await Review.updateOne(
+      { product_id: req.body.product_id, customer_id: _id },
+      req.body
+    );
+
+    if (result.nModified === 0) {
+      // Handle case where no documents were modified
+      console.log("No reviews were updated.");
+    }
+
+    // Redirect to profile after updating
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Error updating review:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 router.delete("/product/:id", isLoggedIn, (req, res) => {
