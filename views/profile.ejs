@@ -75,10 +75,10 @@
       </div>
       <div class="input-box">
         <i class='bx bx-edit' ></i>
-        <h3>Total Reviews: <span><%= name %>!</h3>
-        <h3>Most Recent Review: <span><%= email %>! </h3>
-         <a href="/fruits/edit" class="btn">Edit</a>
-          <a href="/fruits/delete" class="btn">Delete</a>
+        <h3>Total Reviews: <span><%= totalReviews %>!</h3>
+        <h3>Most Recent Review: <span><%= recentProduct.title %>! </h3>
+         <a href="/review/product/<%=recentProduct.id%>/edit" class="btn">Edit</a>
+          <a href="/review/product/<%=recentProduct.id%>/delete" class="btn">Delete</a>
         </div>
       <div class="input-box">
         <i class='bx bx-edit' ></i>

@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3001;
 // import model
 const { User } = require("./models");
 const { Product } = require("./models");
+const { Review } = require("./models");
 
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
@@ -56,12 +57,35 @@ app.get("/profile", isLoggedIn, async (req, res) => {
       createdAt: -1,
     });
     const totalProducts = await Product.countDocuments({ user_id: _id });
+    const totalReviews = await Review.countDocuments({ customer_id: _id });
+
+    // Find the most recent review for the user
+    const recentReview = await Review.findOne({ customer_id: _id }).sort({
+      createdAt: -1,
+    });
+    let recentProduct = {};
+
+    if (recentReview) {
+      // Find the product associated with the most recent review
+      const recentReviewedProduct = await Product.findOne({
+        _id: recentReview.product_id,
+      });
+      if (recentReviewedProduct) {
+        recentProduct = {
+          title: recentReviewedProduct.title,
+          id: recentReviewedProduct.id,
+        };
+      }
+    }
+
     res.render("profile", {
       name,
       email,
       phone,
       product: foundProduct,
       totalProducts,
+      recentProduct,
+      totalReviews,
     });
   } catch (error) {
     console.log(error);

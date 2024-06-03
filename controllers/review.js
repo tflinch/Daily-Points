@@ -38,10 +38,10 @@ router.get("/", isLoggedIn, async (req, res) => {
     ]);
 
     // Log the fetched products to ensure they are correctly retrieved
-    // console.log(
-    //   "Latest Products Without Reviews:",
-    //   latestProductsWithoutReviews
-    // );
+    console.log(
+      "Latest Products Without Reviews:",
+      latestProductsWithoutReviews
+    );
 
     // Render the review template with user details and the latest products
     res.render("review", {
@@ -77,17 +77,41 @@ router.get("/product/:id/create", isLoggedIn, async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-router.get("/product/:id/edit", isLoggedIn, (req, res) => {
+router.get("/product/:id/edit", isLoggedIn, async (req, res) => {
   const { name, email, phone, _id } = req.user;
-  const { id } = req.params.id;
-  let idParsed = parseInt(req.params.id);
-  res.render("review/edit", {});
+  const { id } = req.params; // Extract ID from params
+  console.log(id);
+
+  try {
+    // Fetch the product by its numeric ID
+    const updatedProduct = await Product.findOne({ id: parseInt(id) });
+
+    if (!updatedProduct) {
+      return res.status(404).send("Product not found");
+    }
+
+    // Find the review by product ID and customer ID
+    const updatedReview = await Review.findOne({
+      product_id: updatedProduct._id,
+      customer_id: _id,
+    });
+
+    // Render the edit page with the updated product and review
+    res.render("review/edit", {
+      product: updatedProduct,
+      review: updatedReview,
+      customer_id: _id,
+    });
+  } catch (error) {
+    console.error("Error fetching product for edit:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 router.get("/product/:id/delete", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;
   const { id } = req.params.id;
   let idParsed = parseInt(req.params.id);
-  res.render("/review/delete", {});
+  res.render("review/delete", {});
 });
 
 router.post("/product", isLoggedIn, async (req, res) => {

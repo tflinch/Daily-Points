@@ -43,7 +43,8 @@
     <h1 class="heading">Latest Items to <span>Review</span></h1>
     <div class="container text-center profile">
       <div class="row">
-        <% for (let i = 0; i < 4; i++) {%> <% let product = products[i] %>
+        <% for (let i = 0; i < products.length; i++) {%> <% let product =
+        products[i] %>
 
         <div class="col">
           <h4 class="heading"><span><%=product.title %></span></h4>
