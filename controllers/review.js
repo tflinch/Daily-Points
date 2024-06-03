@@ -106,11 +106,34 @@ router.get("/product/:id/edit", isLoggedIn, async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-router.get("/product/:id/delete", isLoggedIn, (req, res) => {
+router.get("/product/:id/delete", isLoggedIn, async (req, res) => {
   const { name, email, phone, _id } = req.user;
-  const { id } = req.params.id;
-  let idParsed = parseInt(req.params.id);
-  res.render("review/delete", {});
+  const { id } = req.params;
+
+  try {
+    // Fetch the product by its numeric ID
+    const updatedProduct = await Product.findOne({ id: parseInt(id) });
+
+    if (!updatedProduct) {
+      return res.status(404).send("Product not found");
+    }
+
+    // Find the review by product ID and customer ID
+    const updatedReview = await Review.findOne({
+      product_id: updatedProduct._id,
+      customer_id: _id,
+    });
+
+    // Render the edit page with the updated product and review
+    res.render("review/delete", {
+      product: updatedProduct,
+      review: updatedReview,
+      customer_id: _id,
+    });
+  } catch (error) {
+    console.error("Error fetching product for edit:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 router.post("/product", isLoggedIn, async (req, res) => {
@@ -150,10 +173,25 @@ router.put("/product/:id", isLoggedIn, async (req, res) => {
   }
 });
 
-router.delete("/product/:id", isLoggedIn, (req, res) => {
-  console.log("----Delete Product-------- \n", req.body);
+router.delete("/product/:id", isLoggedIn, async (req, res) => {
+  console.log("----Delete Review-------- \n", req.body);
+  const { _id } = req.user;
+  try {
+    // Find and update the product by ID
+    const result = await Review.deleteOne({
+      _id: req.body.id,
+      customer_id: _id,
+    });
 
-  res.redirect("/profile");
+    if (result.deletedCount === 0) {
+      console.error("Error deleting review: No review found");
+      return res.status(404).send("Review not found");
+    }
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 module.exports = router;

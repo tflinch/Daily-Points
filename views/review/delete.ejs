@@ -40,21 +40,33 @@
       </nav>
     </header>
     <div class="container text-center contact">
-      <h4 class="heading">Product: <span>Name</span></h4>
+      <h4 class="heading"><span><%= product.title %></span></h4>
       <div class="home-img">
-        <img src="https://i.imgur.com/QkIa5tT.jpeg" alt="" />
-        <p>Points You will loose: <span>855</span></p>
-        <p>Season: <span>0</span></p>
-        <p>
-          Your Review: Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Culpa, sint!
-        </p>
+        <img
+          src="<%= product.image %>"
+          alt=""
+          class="img-fluid mx-auto d-block"
+        />
+      </div>
+      <div>
+        <h2>Review for <%= product.title %></h2>
+        <p>Rating: <%= review.rating %></p>
+        <p>Your Review: <%= review.content %></p>
+        <% if (review.purchase) { %>
+        <label>Would you buy again? Yes</label>
+        <% } else { %>
+        <label>Would you buy again? No</label>
+        <% } %>
       </div>
       <h1 class="heading">Are sure you want to Delete ?</h1>
-      <form action="/review/product/:id/?_method=DELETE" method="POST">
+      <form
+        action="/review/product/<%=product.id%>/?_method=DELETE"
+        method="POST"
+      >
+        <input type="hidden" name="id" value="<%=review._id%>" />
         <input class="btn" type="submit" value="Yes,Delete" />
       </form>
-      <button class="btn"><a href="/profile">NO!</a></button>
+      <a href="/profile" class="btn">NO!</a>
     </div>
   </body>
 </html>
