@@ -46,11 +46,42 @@
         <img src="<%=product.image %>" alt="" />
         <p><%=product.points %></p>
         <p><%=product.description %></p>
-        <div>
-          <a href="/review/product/<%=product.id%>/create" class="btn"
-            >Earn points
-          </a>
-        </div>
+        <form action="/review/product" method="POST">
+          <div class="input-box">
+            <input
+              type="hidden"
+              name="customer_id"
+              value="<%=customer_id._id%>"
+            />
+            <input type="hidden" name="product_id" value="<%=product._id%>" />
+            <label for="number">What would rate this item?</label>
+            <input
+              type="number"
+              placeholder="1-5"
+              name="rating"
+              max="5"
+              min="1"
+              required
+            />
+          </div>
+          <div class="input-box">
+            <label for="purchase">Would you buy?</label>
+            <select name="purchase" id="purchase">
+              <option value="yes">yes</option>
+              <option value="no">no</option>
+            </select>
+          </div>
+          <textarea
+            name="content"
+            id="message"
+            cols="30"
+            rows="10"
+            placeholder="Your Message"
+            class="item"
+            autocomplete="off"
+          ></textarea>
+          <input type="submit" value="New Review" class="btn" />
+        </form>
       </div>
     </div>
   </body>
