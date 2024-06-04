@@ -144,6 +144,41 @@ nav ul li {
   cursor: pointer;
 }
 
+/* New styles for the card container */
+.new-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 32rem;
+  width: 26rem;
+  background: var(--main-color);
+  border: black solid 1px;
+  border-radius: 10px;
+  box-shadow: 10px 10px;
+  padding: 20px;
+  margin: auto; /* Center the card horizontally */
+  margin-top: 10rem;
+}
+
+.content-container p {
+  padding-top: 0.8rem;
+  font-size: 1rem;
+}
+/* Styles for the image inside the new card container */
+.new-card-container img {
+  border-radius: 1rem;
+  width: 20vw;
+}
+.new-card-container .btn {
+  background: var(--second-bg-color);
+}
+
+/* Additional styling for the no product found message */
+.new-card-container .no-product-message {
+  text-align: center;
+  margin-top: 5rem;
+}
+
 @keyframes floatImage {
   0% {
     transform: translateY(0);

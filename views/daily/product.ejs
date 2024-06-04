@@ -39,21 +39,22 @@
         </ul>
       </nav>
     </header>
-    <div class="container text-center contact">
+
+    <div class="new-card-container">
       <% if (product && product.title) { %>
-      <h4 class="heading"><span><%= product.title %></span></h4>
-      <div class="home-img">
-        <img src="<%= product.image %>" alt="" />
+      <h4><%= product.title %></h4>
+      <div class="content-container">
+        <img src="<%= product.image %>" alt="<%= product.title %>" />
         <p><%= product.points %></p>
         <p><%= product.description %></p>
         <div>
           <a href="/daily/product/<%= product.id %>/create" class="btn"
-            >Earn points
-          </a>
+            >Earn points</a
+          >
         </div>
       </div>
       <% } else { %>
-      <div class="container text-center mt-5">
+      <div class="no-product-message">
         <p>No product found.</p>
         <a href="/profile" class="btn">Go home</a>
       </div>
