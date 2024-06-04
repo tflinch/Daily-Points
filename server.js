@@ -78,6 +78,60 @@ app.get("/profile", isLoggedIn, async (req, res) => {
       }
     }
 
+    // Fetch all reviews created by the user
+    const userReviews = await Review.find({ customer_id: _id });
+
+    // Extract product IDs from the user's reviews
+    const productIds = userReviews.map((review) => review.product_id);
+
+    // Fetch products that the user has reviewed
+    const reviewedProducts = await Product.find({ _id: { $in: productIds } });
+
+    // Calculate the total points from reviewed products
+    const totalPoints = reviewedProducts.reduce(
+      (sum, product) => sum + product.points,
+      0
+    );
+
+    // Aggregate points by user, sort by total points, and limit to top 3 users
+    const topUsers = await Review.aggregate([
+      {
+        $lookup: {
+          from: "products",
+          localField: "product_id",
+          foreignField: "_id",
+          as: "product",
+        },
+      },
+      { $unwind: "$product" },
+      {
+        $group: {
+          _id: "$customer_id",
+          totalPoints: { $sum: "$product.points" },
+        },
+      },
+      { $sort: { totalPoints: -1 } },
+      { $limit: 3 },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      { $unwind: "$user" },
+      {
+        $project: {
+          _id: 0,
+          name: "$user.name",
+          totalPoints: 1,
+        },
+      },
+    ]);
+    console.log("TotalPoints:", totalPoints);
+    console.log("topUsers:", topUsers);
+
     res.render("profile", {
       name,
       email,
@@ -86,6 +140,8 @@ app.get("/profile", isLoggedIn, async (req, res) => {
       totalProducts,
       recentProduct,
       totalReviews,
+      topUsers,
+      totalPoints,
     });
   } catch (error) {
     console.log(error);
