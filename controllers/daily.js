@@ -10,21 +10,39 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 
 //Data Import
 const { Product } = require("../models");
+//Import Shuffle function
+const { shuffleArray } = require("../utils");
 
 router.get("/", isLoggedIn, (req, res) => {
-  const { name, email, phone, _id } = req.user;
   axios
     .get("https://fakestoreapi.com/products/")
-    .then((response) => {
-      // console.log(response.data);
-      const productsArray = response.data.map((product) => ({
+    .then(async (response) => {
+      const productsFromAPI = response.data.map((product) => ({
         id: product.id,
         title: product.title,
         points: product.price,
         image: product.image,
         description: product.description,
       }));
-      res.render("daily", { productArray: productsArray });
+
+      // Fetch all product IDs from the database
+      const existingProductIds = (
+        await Product.find({}, { _id: 0, id: 1 })
+      ).map((product) => product.id);
+
+      // Filter out products from API that are not in the database
+      const newProducts = productsFromAPI.filter(
+        (product) => !existingProductIds.includes(product.id)
+      );
+
+      // Shuffle the new products
+      const shuffledProducts = shuffleArray(newProducts);
+
+      // Select the first four products
+      const selectedProducts = shuffledProducts.slice(0, 4);
+
+      // Render the view with the selected products
+      res.render("daily", { productArray: selectedProducts });
     })
     .catch((error) => {
       console.log(error);
