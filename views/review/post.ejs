@@ -41,6 +41,7 @@
     </header>
 
     <div class="container text-center contact">
+      <% if (product && Object.keys(product).length > 0) { %>
       <h4 class="heading"><span><%=product.title %></span></h4>
       <div class="home-img">
         <img src="<%=product.image %>" alt="" />
@@ -52,6 +53,12 @@
           </a>
         </div>
       </div>
+      <% } else { %>
+      <div class="container text-center mt-5">
+        <p>No product found.</p>
+        <a href="/profile" class="btn">Go home</a>
+      </div>
+      <% } %>
     </div>
   </body>
 </html>

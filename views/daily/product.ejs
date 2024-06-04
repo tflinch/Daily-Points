@@ -40,17 +40,24 @@
       </nav>
     </header>
     <div class="container text-center contact">
-      <h4 class="heading"><span><%=product.title %></span></h4>
+      <% if (product && product.title) { %>
+      <h4 class="heading"><span><%= product.title %></span></h4>
       <div class="home-img">
-        <img src="<%=product.image %>" alt="" />
-        <p><%=product.points %></p>
-        <p><%=product.description %></p>
+        <img src="<%= product.image %>" alt="" />
+        <p><%= product.points %></p>
+        <p><%= product.description %></p>
         <div>
-          <a href="/daily/product/<%=product.id%>/create" class="btn"
+          <a href="/daily/product/<%= product.id %>/create" class="btn"
             >Earn points
           </a>
         </div>
       </div>
+      <% } else { %>
+      <div class="container text-center mt-5">
+        <p>No product found.</p>
+        <a href="/profile" class="btn">Go home</a>
+      </div>
+      <% } %>
     </div>
   </body>
 </html>

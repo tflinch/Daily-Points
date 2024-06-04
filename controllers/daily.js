@@ -60,7 +60,6 @@ router.get("/product/:id", isLoggedIn, (req, res) => {
   axios
     .get(`https://fakestoreapi.com/products/${id}`)
     .then((item) => {
-      console.log(item);
       const product = {
         id: item.data.id,
         title: item.data.title,
@@ -71,7 +70,18 @@ router.get("/product/:id", isLoggedIn, (req, res) => {
 
       res.render("daily/product", { product: product });
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      if (error.response && error.response.status === 404) {
+        // If the product is not found (404), render a no-results page
+        return res.render("daily/no-results", {});
+      } else {
+        // If there's any other error, render an error page
+        console.error("Error fetching product:", error);
+        res.render("error", {
+          message: "An error occurred while fetching the product",
+        });
+      }
+    });
 });
 router.get("/product/:id/create", isLoggedIn, (req, res) => {
   const { name, email, phone, _id } = req.user;
