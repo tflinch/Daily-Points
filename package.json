@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@elasticemail/elasticemail-client": "^4.0.23",
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",

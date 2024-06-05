@@ -7,12 +7,20 @@ const methodOverride = require("method-override");
 const passport = require("./config/passport-config");
 const isLoggedIn = require("./middleware/isLoggedIn");
 const SECRET_SESSION = process.env.SECRET_SESSION;
+const API_KEY = process.env.API_KEY;
 const PORT = process.env.PORT || 3001;
+const ElasticEmail = require("@elasticemail/elasticemail-client");
+
+const client = ElasticEmail.ApiClient.instance;
+
+const apikey = client.authentications["apikey"];
+apikey.apiKey = process.env.API_KEY;
 
 // import model
 const { User } = require("./models");
 const { Product } = require("./models");
 const { Review } = require("./models");
+const { default: axios } = require("axios");
 
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
@@ -148,11 +156,62 @@ app.get("/profile", isLoggedIn, async (req, res) => {
   }
 });
 
-// any authenticated route will need to have isLoggedIn before controller
-// app.get('/pokemon', isLoggedIn, (req, res) => {
-//     // get data
-//     // render page + send data to page
-// });
+app.get("/contact", (req, res) => {
+  res.render("contact");
+});
+
+app.post("/contact", (req, res) => {
+  console.log(req.body);
+  const { fullName, email, phone, subject, message } = req.body;
+
+  // Validate form data
+  if (!fullName || !email || !subject || !message) {
+    return res.status(400).send("Incomplete form data");
+  }
+
+  // Check if required environment variables are present
+  if (!process.env.EMAIL_FROM || !apikey) {
+    return res.status(500).send("Missing environment variables");
+  }
+
+  const emailsApi = new ElasticEmail.EmailsApi();
+
+  const emailData = {
+    Recipients: [
+      {
+        Email: process.env.EMAIL_FROM,
+        Fields: {
+          name: fullName,
+        },
+      },
+    ],
+    Content: {
+      Body: [
+        {
+          ContentType: "HTML",
+          Charset: "utf-8",
+          Content: `<p>Name: ${fullName}</p><p>Email: ${email}</p><p>Phone: ${phone}</p><p>Message: ${message}</p>`,
+        },
+      ],
+      From: process.env.EMAIL_FROM,
+      Subject: subject,
+    },
+  };
+
+  const callback = (error, data, response) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).send("Error sending email");
+    } else {
+      console.log("API called successfully.");
+      console.log("Email sent.");
+      return res.status(200).redirect("/contact");
+    }
+  };
+
+  emailsApi.emailsPost(emailData, callback);
+  console.log("sucess");
+});
 
 // app.get('/pokemon/:id/edit', isLoggedIn, (req, res) => {});
 
