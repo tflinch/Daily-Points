@@ -60,6 +60,19 @@ section {
 .navbar a {
   font-size: 28px;
   color: var(--text-color);
+  margin-left: 64px;
+  transition: 0.3s ease;
+  text-decoration: none;
+}
+.navbar a:hover,
+.navbar a.active {
+  color: var(--main-color);
+}
+
+nav ul li {
+  text-decoration: none;
+  display: inline-block;
+  margin-right: 1.3em;
 }
 
 #menu-icon {
@@ -120,6 +133,38 @@ span {
 
 .home-content p {
   font-size: 1.6rem;
+}
+.profile {
+  margin-top: 5rem;
+}
+
+#profile .input-box {
+  margin-top: 5rem;
+  margin-bottom: 3rem;
+}
+.col h2 {
+  margin-top: 2rem;
+}
+
+.input-box i {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 6rem;
+  height: 6rem;
+  background: transparent;
+  font-size: 5rem;
+  color: var(--main-color);
+  transition: 0.5s ease;
+}
+
+.input-box .btn {
+  margin: 3rem 1.5rem 1rem 0;
+}
+.profile-img img {
+  width: 35vw;
+  border-radius: 0.5rem;
+  padding: 2rem;
 }
 .social-media i {
   display: inline-flex;
