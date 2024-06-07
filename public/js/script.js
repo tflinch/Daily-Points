@@ -20,11 +20,9 @@ function changeImg() {
   setTimeout(changeImg, imgTimer);
 }
 
-if (imgArray.length > 1) {
+if (imgArray.length > 1 && homeImg) {
   setTimeout(changeImg, imgTimer);
 }
-
-console.log("Email Contact Form");
 
 const form = document.querySelector("form");
 const fullName = document.getElementById("name");
@@ -103,3 +101,31 @@ function checkEmail() {
     email.parentElement.classList.remove("error");
   }
 }
+
+function truncateText() {
+  const descriptions = document.querySelectorAll(".description");
+  const titles = document.querySelectorAll(".title");
+  const maxLength = 75; // Set your desired maximum length here
+  const titleLength = 25;
+
+  descriptions.forEach((description) => {
+    const text = description.textContent;
+
+    if (text.length > maxLength) {
+      description.textContent = text.substr(0, maxLength) + "...";
+    } else {
+      description.textContent = text;
+    }
+  });
+  titles.forEach((title) => {
+    const text = title.textContent;
+
+    if (text.length > titleLength) {
+      title.textContent = text.substr(0, titleLength) + "...";
+    } else {
+      title.textContent = text;
+    }
+  });
+}
+
+truncateText();
