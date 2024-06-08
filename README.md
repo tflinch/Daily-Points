@@ -27,6 +27,10 @@ Registered users of Daily Points can log in every day to claim their points by r
 
 - **View seasonal leaderboards:** Users can view leaderboards to see the top users with the most points for each season.
 
+### Contact
+
+- **Contact Form:** Users can contact the development team for product support.
+
 ## User Stories
 
 1. **Create an account:**
@@ -125,6 +129,87 @@ To set up this project locally, follow these steps:
 - **description:** String
 - **points:** Number
 - **season_id:** Number
+
+## Code Snippets
+
+### Contact Route API Handling
+
+```js
+app.post("/contact", (req, res) => {
+  const { fullName, email, phone, subject, message } = req.body;
+
+  // Validate form data
+  if (!fullName || !email || !subject || !message) {
+    req.flash("error", "Incomplete Contact info");
+    return res.status(400).redirect("/contact");
+  }
+
+  // Check if required environment variables are present
+  if (!process.env.EMAIL_FROM || !apikey) {
+    req.flash("error", "Missing environment variables");
+    return res.status(500).redirect("/contact");
+  }
+  const emailsApi = new ElasticEmail.EmailsApi();
+
+  const emailData = {
+    Recipients: [
+      {
+        Email: process.env.EMAIL_FROM,
+        Fields: {
+          name: fullName,
+        },
+      },
+    ],
+    Content: {
+      Body: [
+        {
+          ContentType: "HTML",
+          Charset: "utf-8",
+          Content: `<p>Name: ${fullName}</p><p>Email: ${email}</p><p>Phone: ${phone}</p><p>Message: ${message}</p>`,
+        },
+      ],
+      From: process.env.EMAIL_FROM,
+      Subject: subject,
+    },
+  };
+
+  const callback = (error, data, response) => {
+    if (error) {
+      req.flash("error", "Error sending email");
+      return res.status(500).redirect("/contact");
+    } else {
+      req.flash("success", "Email sent");
+      return res.status(200).redirect("/");
+    }
+  };
+
+  emailsApi.emailsPost(emailData, callback);
+});
+```
+
+### Recent Review Query
+
+```js
+// Find the most recent review for the user
+const recentReview = await Review.findOne({ customer_id: _id }).sort({
+  createdAt: -1,
+});
+let recentProduct = {};
+
+if (recentReview) {
+  // Find the product associated with the most recent review
+  const recentReviewedProduct = await Product.findOne({
+    _id: recentReview.product_id,
+  });
+  if (recentReviewedProduct) {
+    recentProduct = {
+      title: recentReviewedProduct.title,
+      id: recentReviewedProduct.id,
+      image: recentReviewedProduct.image,
+    };
+  }
+}
+```
 
 ## Inspiration
 
