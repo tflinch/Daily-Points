@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.render("home", {});
+  res.render("home", { currentRoute: "/" });
 });
 
 // import auth routes
@@ -150,6 +150,7 @@ app.get("/profile", isLoggedIn, async (req, res) => {
       totalReviews,
       topUsers,
       totalPoints,
+      currentRoute: "/profile",
     });
   } catch (error) {
     console.log(error);
@@ -157,7 +158,7 @@ app.get("/profile", isLoggedIn, async (req, res) => {
 });
 
 app.get("/contact", (req, res) => {
-  res.render("contact");
+  res.render("contact", { currentRoute: "/contact" });
 });
 
 app.post("/contact", (req, res) => {

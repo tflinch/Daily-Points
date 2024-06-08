@@ -10,6 +10,7 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 
 //Data Import
 const { Product } = require("../models");
+const { Review } = require("../models");
 //Import Shuffle function
 const { shuffleArray } = require("../utils");
 
@@ -49,9 +50,55 @@ router.get("/", isLoggedIn, (req, res) => {
     });
 });
 
-router.get("/leaderboard", isLoggedIn, (req, res) => {
-  const { name, email, phone, _id } = req.user;
-  res.render("daily/leaderboard", {});
+router.get("/leaderboard", isLoggedIn, async (req, res) => {
+  try {
+    const topUsers = await Review.aggregate([
+      {
+        $lookup: {
+          from: "products",
+          localField: "product_id",
+          foreignField: "_id",
+          as: "product",
+        },
+      },
+      { $unwind: "$product" },
+      {
+        $group: {
+          _id: "$customer_id",
+          totalPoints: { $sum: "$product.points" },
+          mostRecentReview: { $max: "$createdAt" },
+          mostRecentProduct: { $first: "$product" },
+        },
+      },
+      { $sort: { totalPoints: -1 } },
+      { $limit: 10 },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      { $unwind: "$user" },
+      {
+        $project: {
+          _id: 0,
+          name: "$user.name",
+          totalPoints: 1,
+          mostRecentProduct: {
+            id: "$mostRecentProduct.id",
+            title: "$mostRecentProduct.title",
+          },
+        },
+      },
+    ]);
+
+    res.render("daily/leaderboard", { topUsers });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 router.get("/product/:id", isLoggedIn, (req, res) => {
