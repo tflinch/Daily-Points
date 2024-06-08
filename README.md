@@ -211,6 +211,11 @@ if (recentReview) {
 }
 ```
 
+## API
+
+- [FakeStore Api](https://fakestoreapi.com/)
+- [ElasticMail Api](https://elasticemail.com/developers/api-documentation/rest-api)
+
 ## Inspiration
 
 - [Twice Daily Rewards](https://twicedaily.com/rewards/)
