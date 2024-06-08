@@ -1,48 +1,54 @@
 <%- include('../partials/header.ejs') %>
-<div class="container text-center contact mt-5">
-  <div class="card m-auto">
-    <img src="<%= product.image %>" class="card-img-top p-3" alt="..." />
-    <div class="card-body">
-      <h3 class="card-title m-3"><%= product.title%></h3>
-      <p class="card-span m-3">Points: <%= product.points %></p>
-      <p class="card-text m-3"><%= product.description %></p>
+<section class="contact" id="contact">
+  <div class="container text-center contact mt-5">
+    <div class="card m-auto">
+      <img src="<%= product.image %>" class="card-img-top p-3" alt="..." />
+      <div class="card-body">
+        <h3 class="card-title m-3"><%= product.title%></h3>
+        <p class="card-span m-3">Points: <%= product.points %></p>
+        <p class="card-text m-3"><%= product.description %></p>
+      </div>
     </div>
+    <form action="/review/product/<%= product._id %>?_method=PUT" method="POST">
+      <div class="input-box">
+        <input
+          type="hidden"
+          name="customer_id"
+          value="<%= customer_id._id %>"
+        />
+        <input type="hidden" name="product_id" value="<%= product._id %>" />
+        <label for="number" style="width: 50%"
+          >What would you rate this item?</label
+        >
+        <input
+          type="number"
+          placeholder="1-5"
+          name="rating"
+          max="5"
+          min="1"
+          required
+          style="width: 50%"
+          class="form-control"
+        />
+      </div>
+      <div class="input-box">
+        <label for="purchase" style="width: 50%">Would you buy?</label>
+        <select name="purchase" id="purchase" style="width: 50%">
+          <option value="yes">yes</option>
+          <option value="no">no</option>
+        </select>
+      </div>
+      <textarea
+        name="content"
+        id="message"
+        cols="30"
+        rows="10"
+        placeholder="Your Message"
+        class="form-control item"
+        autocomplete="off"
+      ></textarea>
+      <input type="submit" value="Edit Your Review" class="btn" />
+    </form>
   </div>
-  <form action="/review/product/<%= product._id %>?_method=PUT" method="POST">
-    <div class="input-box">
-      <input type="hidden" name="customer_id" value="<%= customer_id._id %>" />
-      <input type="hidden" name="product_id" value="<%= product._id %>" />
-      <label for="number" style="width: 50%"
-        >What would you rate this item?</label
-      >
-      <input
-        type="number"
-        placeholder="1-5"
-        name="rating"
-        max="5"
-        min="1"
-        required
-        style="width: 50%"
-        class="form-control"
-      />
-    </div>
-    <div class="input-box">
-      <label for="purchase" style="width: 50%">Would you buy?</label>
-      <select name="purchase" id="purchase" style="width: 50%">
-        <option value="yes">yes</option>
-        <option value="no">no</option>
-      </select>
-    </div>
-    <textarea
-      name="content"
-      id="message"
-      cols="30"
-      rows="10"
-      placeholder="Your Message"
-      class="form-control item"
-      autocomplete="off"
-    ></textarea>
-    <input type="submit" value="Edit Your Review" class="btn" />
-  </form>
-</div>
+</section>
 <%- include('../partials/footer.ejs') %>

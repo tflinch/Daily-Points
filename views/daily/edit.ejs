@@ -1,47 +1,49 @@
 <%- include('../partials/header.ejs') %>
-<div class="container text-center contact mt-5">
-  <div class="card m-auto">
-    <img src="<%= product.image %>" class="card-img-top p-3" alt="..." />
-    <div class="card-body">
-      <h3 class="card-title m-3"><%= product.title%></h3>
-      <p class="card-span m-3">Points: <%= product.points %></p>
-      <p class="card-text m-3"><%= product.description %></p>
+<section class="contact" id="contact">
+  <div class="container text-center contact mt-5">
+    <div class="card m-auto">
+      <img src="<%= product.image %>" class="card-img-top p-3" alt="..." />
+      <div class="card-body">
+        <h3 class="card-title m-3"><%= product.title%></h3>
+        <p class="card-span m-3">Points: <%= product.points %></p>
+        <p class="card-text m-3"><%= product.description %></p>
+      </div>
     </div>
-  </div>
-  <form action="/daily/product/:id/?_method=PUT" method="POST">
-    <div class="input-box">
-      <label for="title" style="width: 50%">New Product Name:</label>
-      <input type="hidden" name="id" value="<%=product.id%>" />
-      <input
-        type="text"
-        style="width: 50%"
-        placeholder="<%=product.title%>"
-        name="title"
-        required
-      />
-    </div>
-    <div class="input-box">
-      <label for="points" style="width: 50%">New Product Points:</label>
-      <input
-        style="width: 50%"
-        type="number"
-        name="points"
-        placeholder="<%=product.points%>"
-        required
-      />
-      <input type="hidden" name="image" value="<%=product.image%>" />
-    </div>
-    <textarea
-      name="description"
-      id="message"
-      cols="30"
-      rows="10"
-      placeholder="New description"
-      class="item"
-      autocomplete="off"
-    ></textarea>
+    <form action="/daily/product/:id/?_method=PUT" method="POST">
+      <div class="input-box">
+        <label for="title" style="width: 50%">New Product Name:</label>
+        <input type="hidden" name="id" value="<%=product.id%>" />
+        <input
+          type="text"
+          style="width: 50%"
+          placeholder="<%=product.title%>"
+          name="title"
+          required
+        />
+      </div>
+      <div class="input-box">
+        <label for="points" style="width: 50%">New Product Points:</label>
+        <input
+          style="width: 50%"
+          type="number"
+          name="points"
+          placeholder="<%=product.points%>"
+          required
+        />
+        <input type="hidden" name="image" value="<%=product.image%>" />
+      </div>
+      <textarea
+        name="description"
+        id="message"
+        cols="30"
+        rows="10"
+        placeholder="New description"
+        class="item"
+        autocomplete="off"
+      ></textarea>
 
-    <input type="submit" value="update" class="btn" />
-  </form>
-</div>
+      <input type="submit" value="update" class="btn" />
+    </form>
+  </div>
+</section>
 <%- include('../partials/footer.ejs') %>

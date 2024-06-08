@@ -6,10 +6,15 @@
       <div class="timeline-box">
         <div class="timeline-content">
           <div class="content">
-            <div class="year"><i class="bx bx-trophy"></i> # <%= index + 1 %></div>
+            <div class="year">
+              <i class="bx bx-trophy"></i> # <%= index + 1 %>
+            </div>
             <h3>User: <span><%= user.name %></span></h3>
             <p>Total Points: <span><%= user.totalPoints %></span></p>
-            <p>Most Recent Product: <span class="title"><%= user.mostRecentProduct.title %></span></p>
+            <p>
+              Most Recent Product:
+              <span class="title"><%= user.mostRecentProduct.title %></span>
+            </p>
           </div>
         </div>
       </div>
@@ -17,5 +22,4 @@
   </div>
   <% }) %>
 </section>
-    <%- include('../partials/footer.ejs') %>
-
+<%- include('../partials/footer.ejs') %>

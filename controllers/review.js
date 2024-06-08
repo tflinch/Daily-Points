@@ -47,7 +47,6 @@ router.get("/", isLoggedIn, async (req, res) => {
 
 router.get("/product/:id", isLoggedIn, async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   try {
     const foundProduct = await Product.findOne({ id: parseInt(id) });
     res.render("review/post", {

@@ -1,22 +1,27 @@
 <%- include('../partials/header.ejs') %>
-<div class="container text-center contact mt-5">
-  <div class="card m-auto">
-    <img src="<%= product.image %>" class="card-img-top p-3" alt="..." />
-    <div class="card-body">
-      <h3 class="card-title m-3">Review for <%= product.title %></h3>
-      <p class="card-span m-3">Rating: <%= review.rating %></p>
-      <p class="card-text m-3">Your Review: <%= review.content %></p>
-      <% if (review.purchase) { %>
-      <p class="card-text m-3">Would you buy again? Yes</p>
-      <% } else { %>
-      <p class="card-text m-3">Would you buy again? No</p>
-      <% } %>
+<section class="contact" id="contact">
+  <div class="container text-center contact mt-5">
+    <div class="card m-auto">
+      <img src="<%= product.image %>" class="card-img-top p-3" alt="..." />
+      <div class="card-body">
+        <h3 class="card-title m-3">Review for <%= product.title %></h3>
+        <p class="card-span m-3">Rating: <%= review.rating %></p>
+        <p class="card-text m-3">Your Review: <%= review.content %></p>
+        <% if (review.purchase) { %>
+        <p class="card-text m-3">Would you buy again? Yes</p>
+        <% } else { %>
+        <p class="card-text m-3">Would you buy again? No</p>
+        <% } %>
+      </div>
     </div>
+    <form
+      action="/review/product/<%=product.id%>/?_method=DELETE"
+      method="POST"
+    >
+      <input type="hidden" name="id" value="<%=review._id%>" />
+      <input class="btn" type="submit" value="Yes,Delete" />
+    </form>
+    <a href="/profile" class="btn">NO!</a>
   </div>
-  <form action="/review/product/<%=product.id%>/?_method=DELETE" method="POST">
-    <input type="hidden" name="id" value="<%=review._id%>" />
-    <input class="btn" type="submit" value="Yes,Delete" />
-  </form>
-  <a href="/profile" class="btn">NO!</a>
-</div>
+</section>
 <%- include('../partials/footer.ejs') %>

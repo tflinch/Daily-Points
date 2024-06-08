@@ -1,25 +1,25 @@
 <%- include('../partials/header.ejs') %>
-
-<div class="container d-flex justify-content-center mt-5">
-  <% if (product && product.title) { %>
-  <div class="card mt-5">
-    <img src="<%= product.image %>" class="card-img-top p-3" alt="..." />
-    <div class="card-body">
-      <h3 class="card-title m-3"><%= product.title%></h3>
-      <p class="card-span m-3">Points: <%= product.points %></p>
-      <p class="card-text m-3"><%= product.description %></p>
-      <a href="/daily/product/<%= product.id %>/create" class="btn mt-3"
-        >Earn points</a
-      >
+<section class="contact" id="contact">
+  <div class="container d-flex justify-content-center mt-5">
+    <% if (product && product.title) { %>
+    <div class="card mt-5">
+      <img src="<%= product.image %>" class="card-img-top p-3" alt="..." />
+      <div class="card-body">
+        <h3 class="card-title m-3"><%= product.title%></h3>
+        <p class="card-span m-3">Points: <%= product.points %></p>
+        <p class="card-text m-3"><%= product.description %></p>
+        <a href="/daily/product/<%= product.id %>/create" class="btn mt-3"
+          >Earn points</a
+        >
+      </div>
     </div>
-  </div>
 
-  <% } else { %>
-  <div class="no-product-message">
-    <p>No product found.</p>
-    <a href="/profile" class="btn">Go home</a>
+    <% } else { %>
+    <div class="no-product-message">
+      <p>No product found.</p>
+      <a href="/profile" class="btn">Go home</a>
+    </div>
+    <% } %>
   </div>
-  <% } %>
-</div>
-
+</section>
 <%- include('../partials/footer.ejs') %>
