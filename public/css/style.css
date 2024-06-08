@@ -56,6 +56,9 @@ section {
   font-weight: 600;
   cursor: default;
 }
+.navbar{
+  background: var(--second-bg-color);
+}
 
 .navbar a {
   font-size: 28px;
@@ -567,9 +570,6 @@ form button:hover {
 .timeline-row .timeline-column {
   width: 50%;
 }
-
-
-
 .timeline-column .timeline-box {
   position: relative;
   width: 100%;

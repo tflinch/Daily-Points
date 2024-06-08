@@ -7,7 +7,6 @@ const methodOverride = require("method-override");
 const passport = require("./config/passport-config");
 const isLoggedIn = require("./middleware/isLoggedIn");
 const SECRET_SESSION = process.env.SECRET_SESSION;
-const API_KEY = process.env.API_KEY;
 const PORT = process.env.PORT || 3001;
 const ElasticEmail = require("@elasticemail/elasticemail-client");
 
@@ -47,15 +46,13 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.render("home", { currentRoute: "/" });
+  res.render("home");
 });
 
 // import auth routes
 app.use("/auth", require("./controllers/auth"));
 app.use("/daily", require("./controllers/daily"));
 app.use("/review", require("./controllers/review"));
-// app.use('/pokemon', require('./controllers/pokemon'));
-// app.use('/', require('./controllers/pokemon'));
 
 // --- AUTHENTICATED ROUTE: go to user profile page ---
 app.get("/profile", isLoggedIn, async (req, res) => {
@@ -100,7 +97,6 @@ app.get("/profile", isLoggedIn, async (req, res) => {
       (sum, product) => sum + product.points,
       0
     );
-
     // Aggregate points by user, sort by total points, and limit to top 3 users
     const topUsers = await Review.aggregate([
       {
@@ -137,9 +133,6 @@ app.get("/profile", isLoggedIn, async (req, res) => {
         },
       },
     ]);
-    console.log("TotalPoints:", totalPoints);
-    console.log("topUsers:", topUsers);
-
     res.render("profile", {
       name,
       email,
@@ -150,7 +143,6 @@ app.get("/profile", isLoggedIn, async (req, res) => {
       totalReviews,
       topUsers,
       totalPoints,
-      currentRoute: "/profile",
     });
   } catch (error) {
     console.log(error);
@@ -158,23 +150,23 @@ app.get("/profile", isLoggedIn, async (req, res) => {
 });
 
 app.get("/contact", (req, res) => {
-  res.render("contact", { currentRoute: "/contact" });
+  res.render("contact", );
 });
 
 app.post("/contact", (req, res) => {
-  console.log(req.body);
   const { fullName, email, phone, subject, message } = req.body;
 
   // Validate form data
   if (!fullName || !email || !subject || !message) {
-    return res.status(400).send("Incomplete form data");
+    req.flash("error", "Incomplete Contact info")
+    return res.status(400).redirect('/contact');
   }
 
   // Check if required environment variables are present
   if (!process.env.EMAIL_FROM || !apikey) {
-    return res.status(500).send("Missing environment variables");
+    req.flash("error", "Missing environment variables")
+    return res.status(500).redirect('/contact');
   }
-
   const emailsApi = new ElasticEmail.EmailsApi();
 
   const emailData = {
@@ -201,22 +193,16 @@ app.post("/contact", (req, res) => {
 
   const callback = (error, data, response) => {
     if (error) {
-      console.error(error);
-      return res.status(500).send("Error sending email");
+      req.flash("error", "Error sending email")
+      return res.status(500).redirect('/contact');
     } else {
-      console.log("API called successfully.");
-      console.log("Email sent.");
-      return res.status(200).redirect("/contact");
+      req.flash("success", "Email sent")
+      return res.status(200).redirect("/");
     }
   };
 
   emailsApi.emailsPost(emailData, callback);
-  console.log("sucess");
 });
-
-// app.get('/pokemon/:id/edit', isLoggedIn, (req, res) => {});
-
-// app.delete('/pokemon/:id', isLoggedIn, (req, res) => {});
 
 const server = app.listen(PORT, () => {
   console.log("🏎️ You are listening on PORT", PORT);
