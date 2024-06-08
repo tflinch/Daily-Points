@@ -56,7 +56,7 @@ section {
   font-weight: 600;
   cursor: default;
 }
-.navbar{
+.navbar {
   background: var(--second-bg-color);
 }
 
@@ -170,8 +170,15 @@ span {
 .input-box .btn {
   margin: 3rem 1.5rem 1rem 0;
 }
+.profile-img {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .profile-img img {
-  width: 35vw;
+  width: 28rem;
   border-radius: 0.5rem;
   padding: 2rem;
 }
