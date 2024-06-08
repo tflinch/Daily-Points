@@ -1,5 +1,3 @@
-console.log("Hello From Scripts");
-
 const imgTimer = 5000;
 let homeImg = document.getElementById("homeImg");
 let imgArray = [
@@ -16,10 +14,25 @@ const phone = document.getElementById("phone");
 const mess = document.getElementById("message");
 const subject = document.getElementById("subject");
 
-document.getElementById('contactForm').addEventListener('submit', (e) => {
-  e.preventDefault(); 
-  if (checkInputs()) { 
-    e.target.submit(); 
+function changeImg() {
+  const curImg = homeImg.getAttribute("src");
+  const curIndex = imgArray.indexOf(curImg);
+  if (curIndex !== -1 && curIndex !== imgArray.length - 1) {
+    homeImg.setAttribute("src", imgArray[curIndex + 1]);
+  } else {
+    homeImg.setAttribute("src", imgArray[0]);
+  }
+  setTimeout(changeImg, imgTimer);
+}
+
+if (imgArray.length > 1 && homeImg) {
+  setTimeout(changeImg, imgTimer);
+}
+
+document.getElementById("contactForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (checkInputs()) {
+    e.target.submit();
   }
 });
 
@@ -31,8 +44,13 @@ function checkInputs() {
     if (item.value === "") {
       item.classList.add("error");
       item.parentElement.classList.add("error");
-      showError(item, `${item.name.charAt(0).toUpperCase() + item.name.slice(1)} cannot be blank`);
-      isValid = false; 
+      showError(
+        item,
+        `${
+          item.name.charAt(0).toUpperCase() + item.name.slice(1)
+        } cannot be blank`
+      );
+      isValid = false;
     } else {
       item.classList.remove("error");
       item.parentElement.classList.remove("error");
@@ -41,7 +59,7 @@ function checkInputs() {
 
     if (item.type === "email") {
       if (!checkEmail()) {
-        isValid = false; 
+        isValid = false;
       }
       item.addEventListener("keyup", checkEmail);
     } else {
@@ -53,13 +71,18 @@ function checkInputs() {
         } else {
           item.classList.add("error");
           item.parentElement.classList.add("error");
-          showError(item, `${item.name.charAt(0).toUpperCase() + item.name.slice(1)} cannot be blank`);
-          isValid = false; 
+          showError(
+            item,
+            `${
+              item.name.charAt(0).toUpperCase() + item.name.slice(1)
+            } cannot be blank`
+          );
+          isValid = false;
         }
       });
     }
   }
-  return isValid; 
+  return isValid;
 }
 
 function checkEmail() {
@@ -76,12 +99,12 @@ function checkEmail() {
     } else {
       errorTxtEmail.textContent = "Email Address cannot be blank";
     }
-    return false; 
+    return false;
   } else {
     email.classList.remove("error");
     email.parentElement.classList.remove("error");
     errorTxtEmail.textContent = "";
-    return true; 
+    return true;
   }
 }
 
@@ -102,7 +125,7 @@ function hideError(input) {
 function truncateText() {
   const descriptions = document.querySelectorAll(".description");
   const titles = document.querySelectorAll(".title");
-  const maxLength = 75; 
+  const maxLength = 75;
   const titleLength = 25;
 
   descriptions.forEach((description) => {
