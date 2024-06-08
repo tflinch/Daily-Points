@@ -1,103 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign In</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/css/profile.css" />
-  </head>
-  <body>
-    <% if (alerts.success) { %> <% alerts.success.forEach(msg => { %>
-
-    <div class="alert alert-success"><%= msg %></div>
-    <% }) %> <% } %> <% if (alerts.error) { %> <% alerts.error.forEach(msg => {
-    %>
-    <div class="alert alert-danger"><%= msg %></div>
-    <% }) %> <% } %>
-
-    <header>
-      <nav class="navbar">
-        <a class="navbar-brand" href="/">DailyPoints</a>
-        <ul>
-          <% if(!currentUser) { %>
-          <li><a href="/auth/signup">Signup</a></li>
-          <li><a href="/auth/login">Login</a></li>
-          <% } else { %>
-          <li><a href="/auth/logout">Logout</a></li>
-          <li><a href="/profile">Profile</a></li>
-          <% } %>
-        </ul>
-      </nav>
-    </header>
-    <div class="container text-center contact">
-      <h4 class="heading"><span><%= product.title %></span></h4>
-      <div class="home-img">
-        <img
-          src="<%= product.image %>"
-          alt=""
-          class="img-fluid mx-auto d-block"
-        />
-      </div>
-      <div>
-        <h2>Review for <%= product.title %></h2>
-        <p>Rating: <%= review.rating %></p>
-        <p>Your Review: <%= review.content %></p>
-        <% if (review.purchase) { %>
-        <label>Would you buy again? Yes</label>
-        <% } else { %>
-        <label>Would you buy again? No</label>
-        <% } %>
-      </div>
-      <form
-        action="/review/product/<%= product._id %>?_method=PUT"
-        method="POST"
-      >
-        <div class="input-box">
-          <input
-            type="hidden"
-            name="customer_id"
-            value="<%= customer_id._id %>"
-          />
-          <input type="hidden" name="product_id" value="<%= product._id %>" />
-          <label for="number">What would you rate this item?</label>
-          <input
-            type="number"
-            placeholder="1-5"
-            name="rating"
-            max="5"
-            min="1"
-            required
-            class="form-control"
-          />
-        </div>
-        <div class="input-box">
-          <label for="purchase">Would you buy?</label>
-          <select name="purchase" id="purchase" class="form-control">
-            <option value="yes">yes</option>
-            <option value="no">no</option>
-          </select>
-        </div>
-        <textarea
-          name="content"
-          id="message"
-          cols="30"
-          rows="10"
-          placeholder="Your Message"
-          class="form-control item"
-          autocomplete="off"
-        ></textarea>
-        <input type="submit" value="Edit Your Review" class="btn" />
-      </form>
+<%- include('../partials/header.ejs') %>
+<div class="container text-center contact mt-5">
+  <div class="card m-auto">
+    <img src="<%= product.image %>" class="card-img-top p-3" alt="..." />
+    <div class="card-body">
+      <h3 class="card-title m-3"><%= product.title%></h3>
+      <p class="card-span m-3">Points: <%= product.points %></p>
+      <p class="card-text m-3"><%= product.description %></p>
     </div>
-  </body>
-</html>
+  </div>
+  <form action="/review/product/<%= product._id %>?_method=PUT" method="POST">
+    <div class="input-box">
+      <input type="hidden" name="customer_id" value="<%= customer_id._id %>" />
+      <input type="hidden" name="product_id" value="<%= product._id %>" />
+      <label for="number" style="width: 50%"
+        >What would you rate this item?</label
+      >
+      <input
+        type="number"
+        placeholder="1-5"
+        name="rating"
+        max="5"
+        min="1"
+        required
+        style="width: 50%"
+        class="form-control"
+      />
+    </div>
+    <div class="input-box">
+      <label for="purchase" style="width: 50%">Would you buy?</label>
+      <select name="purchase" id="purchase" style="width: 50%">
+        <option value="yes">yes</option>
+        <option value="no">no</option>
+      </select>
+    </div>
+    <textarea
+      name="content"
+      id="message"
+      cols="30"
+      rows="10"
+      placeholder="Your Message"
+      class="form-control item"
+      autocomplete="off"
+    ></textarea>
+    <input type="submit" value="Edit Your Review" class="btn" />
+  </form>
+</div>
+<%- include('../partials/footer.ejs') %>
