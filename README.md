@@ -1,4 +1,3 @@
-````markdown
 # SEI SEBPT220 Project 2: Daily Points
 
 Daily Points is an online rewards program where users can log in daily to review digital products and earn points.
@@ -140,4 +139,7 @@ To set up this project locally, follow these steps:
 ![ERD Mock Ip](assets/img/ERD-Mock-Up.png)
 
 [Excalidraw Mockup](https://excalidraw.com/#json=vmVDnChu3kJT34AJRSpbp,d2nAkflCj85Uhd7vuxLkKA)
-````
+
+```
+
+```
