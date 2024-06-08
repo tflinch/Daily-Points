@@ -146,7 +146,8 @@ app.get("/profile", isLoggedIn, async (req, res) => {
       totalPoints,
     });
   } catch (error) {
-    console.log(error);
+    req.flash("error", "No products found");
+    return res.status(500).redirect("/");
   }
 });
 

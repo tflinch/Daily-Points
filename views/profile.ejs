@@ -6,13 +6,34 @@
       <div class="col-md-6">
         <h2 class="heading">Create New <span>Products</span></h2>
         <div class="profile-img mb-4">
-          <img src="<%= product.image %>" class="img-fluid" alt="" />
+          <% if (product) { %>
+          <img
+            src="<%= product.image %>"
+            class="img-fluid"
+            alt="Product Image"
+          />
           <a href="/daily" class="btn btn-primary mt-2">Create</a>
+          <% } else { %>
+          <p>No product available to create.</p>
+          <a href="/daily" class="btn btn-primary mt-2">Lets Create</a>
+          <% } %>
         </div>
+
         <h2 class="heading">Review <span>Products</span></h2>
         <div class="profile-img">
-          <img src="<%=recentProduct.image%>" class="img-fluid" alt="" />
+          <% if (recentProduct) { %>
+          <img
+            src="<%= recentProduct.image %>"
+            class="img-fluid"
+            alt="Recent Product Image"
+          />
           <a href="/review" class="btn btn-primary mt-2">Review</a>
+          <% } else { %>
+          <p>No recent products available to review.</p>
+          <a href="/daily" class="btn btn-primary mt-2"
+            >Lets Create a new product</a
+          >
+          <% } %>
         </div>
       </div>
       <div class="col-md-6">
