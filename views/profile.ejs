@@ -1,65 +1,105 @@
 <%- include('partials/header') %>
-    
+
 <section class="contact" id="contact">
-    <div class="container text-center profile">
-      <div class="row">
-    <div class="col">
-      <h2 class="heading">Create New <span>Products</span></h2>
-        
-      <div class="profile-img">
-        <img src="https://i.imgur.com/QkIa5tT.jpeg" alt="" />
-        <a href="/daily" class="btn">Create</a>
-      </div>
-      <h2 class="heading">Review <span>Products</span></h2>
-      <div class="profile-img">
-        <img src="https://i.imgur.com/QkIa5tT.jpeg" alt="" />
-        <a href="/review" class="btn">Review</a>
-      </div>
-    </div>
-    <div class="col">
-      <h2 class="heading">Profile <span>Stats</span></h2>
-      <div id="profile">
-        
-      <div class="input-box">
-        <i class='bx bx-info-circle' ></i>
-          <h3>Name: <span><%= name %>!</h3>
-          <h3>Email: <span><%= email %>! </h3>
-      </div>
-      <div class="input-box">
-        <i class="bx bx-coin"></i>
-        <h3>Points Earned: <span><%= totalPoints %>!</h3>
-      </div>
-      <div class="input-box">
-        <i class='bx bx-bar-chart-alt-2' ></i>
-        <h3>Top 3 reviewers:</h3>
-          <% topUsers.forEach(user => { %>
-            <p><span><%= user.name %></span> - <%= user.totalPoints %> points</p>
-          <% }) %>
-      </div>
-      <div class="input-box">
-          <i class='bx bx-edit' ></i>
-          <h3>Total Created Products: <span><%= totalProducts %></span></h3>
-          <% if (product) { %>
-            <h3>Most Recent Product: <span><%= product.title %></span></h3>
-            <a href="/daily/product/<%=product.id%>/edit" class="btn">Edit</a>
-            <a href="/daily/product/<%=product.id%>/delete" class="btn">Delete</a>
-          <% } else { %>
-            <h3>No products found</h3>
-          <% } %>
+  <div class="container profile">
+    <div class="row text-center">
+      <div class="col-md-6">
+        <h2 class="heading">Create New <span>Products</span></h2>
+        <div class="profile-img mb-4">
+          <img src="<%= product.image %>" class="img-fluid" alt="" />
+          <a href="/daily" class="btn btn-primary mt-2">Create</a>
         </div>
-      <div class="input-box">
-        <i class='bx bx-edit' ></i>
-        <h3>Total Reviews: <span><%= totalReviews %></span></h3>
-        <% if (recentProduct && recentProduct.title) { %>
-          <h3>Most Recent Review: <span><%= recentProduct.title %></span></h3>
-          <a href="/review/product/<%=recentProduct.id%>/edit" class="btn">Edit</a>
-          <a href="/review/product/<%=recentProduct.id%>/delete" class="btn">Delete</a>
-        <% } else { %>
-          <h3>No recent review</h3>
-        <% } %>
+        <h2 class="heading">Review <span>Products</span></h2>
+        <div class="profile-img">
+          <img src="<%=recentProduct.image%>" class="img-fluid" alt="" />
+          <a href="/review" class="btn btn-primary mt-2">Review</a>
+        </div>
       </div>
+      <div class="col-md-6">
+        <h2 class="heading">Profile <span>Stats</span></h2>
+        <div id="profile">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="input-box">
+                <i class="bx bx-info-circle"></i>
+                <h3 class="text-left">Name: <span><%= name %></span></h3>
+                <h3 class="text-left">Email: <span><%= email %></span></h3>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="input-box">
+                <i class="bx bx-coin"></i>
+                <h3 class="text-left">
+                  Points Earned: <span><%= totalPoints %></span>
+                </h3>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="input-box">
+                <i class="bx bx-bar-chart-alt-2"></i>
+                <h3 class="text-left">Top 3 Reviewers:</h3>
+                <% topUsers.forEach(user => { %>
+                <p class="text-left">
+                  <span><%= user.name %></span> - <%= user.totalPoints %> points
+                </p>
+                <% }) %>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="input-box">
+                <i class="bx bx-edit"></i>
+                <h3 class="text-left">
+                  Total Created Products: <span><%= totalProducts %></span>
+                </h3>
+                <% if (product) { %>
+                <h3 class="text-left">
+                  Most Recent Product: <span><%= product.title %></span>
+                </h3>
+                <a
+                  href="/daily/product/<%=product.id%>/edit"
+                  class="btn btn-secondary mt-2"
+                  >Edit</a
+                >
+                <a
+                  href="/daily/product/<%=product.id%>/delete"
+                  class="btn btn-danger mt-2"
+                  >Delete</a
+                >
+                <% } else { %>
+                <h3>No products found</h3>
+                <% } %>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="input-box">
+                <i class="bx bx-edit"></i>
+                <h3 class="text-left">
+                  Total Reviews: <span><%= totalReviews %></span>
+                </h3>
+                <% if (recentProduct && recentProduct.title) { %>
+                <h3 class="text-left">
+                  Most Recent Review: <span><%= recentProduct.title %></span>
+                </h3>
+                <a
+                  href="/review/product/<%=recentProduct.id%>/edit"
+                  class="btn btn-secondary mt-2"
+                  >Edit</a
+                >
+                <a
+                  href="/review/product/<%=recentProduct.id%>/delete"
+                  class="btn btn-danger mt-2"
+                  >Delete</a
+                >
+                <% } else { %>
+                <h3>No recent review</h3>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    </div>
-  </section>
+  </div>
+</section>
+
 <%- include('partials/footer') %>

@@ -79,6 +79,7 @@ app.get("/profile", isLoggedIn, async (req, res) => {
         recentProduct = {
           title: recentReviewedProduct.title,
           id: recentReviewedProduct.id,
+          image: recentReviewedProduct.image,
         };
       }
     }
@@ -150,7 +151,7 @@ app.get("/profile", isLoggedIn, async (req, res) => {
 });
 
 app.get("/contact", (req, res) => {
-  res.render("contact", );
+  res.render("contact");
 });
 
 app.post("/contact", (req, res) => {
@@ -158,14 +159,14 @@ app.post("/contact", (req, res) => {
 
   // Validate form data
   if (!fullName || !email || !subject || !message) {
-    req.flash("error", "Incomplete Contact info")
-    return res.status(400).redirect('/contact');
+    req.flash("error", "Incomplete Contact info");
+    return res.status(400).redirect("/contact");
   }
 
   // Check if required environment variables are present
   if (!process.env.EMAIL_FROM || !apikey) {
-    req.flash("error", "Missing environment variables")
-    return res.status(500).redirect('/contact');
+    req.flash("error", "Missing environment variables");
+    return res.status(500).redirect("/contact");
   }
   const emailsApi = new ElasticEmail.EmailsApi();
 
@@ -193,10 +194,10 @@ app.post("/contact", (req, res) => {
 
   const callback = (error, data, response) => {
     if (error) {
-      req.flash("error", "Error sending email")
-      return res.status(500).redirect('/contact');
+      req.flash("error", "Error sending email");
+      return res.status(500).redirect("/contact");
     } else {
-      req.flash("success", "Email sent")
+      req.flash("success", "Email sent");
       return res.status(200).redirect("/");
     }
   };
