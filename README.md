@@ -83,7 +83,7 @@ To set up this project locally, follow these steps:
 
 ## Live Demo
 
-[Live Demo Site](#)
+[Live Demo Site](https://daily-points.onrender.com/)
 
 ## Models
 
