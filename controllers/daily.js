@@ -97,7 +97,8 @@ router.get("/leaderboard", isLoggedIn, async (req, res) => {
     res.render("daily/leaderboard", { topUsers });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Internal Server Error");
+    res.status(500).redirect("/profile");
   }
 });
 
@@ -124,9 +125,8 @@ router.get("/product/:id", isLoggedIn, (req, res) => {
       } else {
         // If there's any other error, render an error page
         console.error("Error fetching product:", error);
-        res.render("error", {
-          message: "An error occurred while fetching the product",
-        });
+        req.flash("error", "An error occurred while fetching the product");
+        res.status(500).redirect("/profile");
       }
     });
 });
@@ -146,42 +146,39 @@ router.get("/product/:id/create", isLoggedIn, (req, res) => {
 
       res.render("daily/create", { product: product });
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      req.flash("error", "fetching product");
+      res.status(500).redirect("/profile");
+    });
 });
 router.get("/product/:id/edit", isLoggedIn, async (req, res) => {
   const { name, email, phone, _id } = req.user;
   const { id } = parseInt(req.params);
   try {
-    // Fetch the updated product
     const updatedProduct = await Product.findOne(id).sort({
       createdAt: -1,
     });
-
-    // Render the edit page with the updated product
     res.render("daily/edit", { product: updatedProduct });
   } catch (error) {
-    console.error("Error updating product:", error);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Error Fetching product");
+    res.status(500).redirect("/profile");
   }
 });
 router.get("/product/:id/delete", isLoggedIn, async (req, res) => {
   const { name, email, phone, _id } = req.user;
   const { id } = parseInt(req.params);
   try {
-    // Fetch the updated product
     const updatedProduct = await Product.findOne(id).sort({
       createdAt: -1,
     });
-
-    // Render the edit page with the updated product
     res.render("daily/delete", { product: updatedProduct });
   } catch (error) {
-    console.error("Error updating product:", error);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Error Fetching Product");
+    res.status(500).redirect("/profile");
   }
 });
 
-router.post("/product", isLoggedIn, (req, res) => {
+router.post("/product", isLoggedIn, async (req, res) => {
   console.log("--- FORM BODY \n", req.body);
   const { id, title, points, image, description } = req.body;
   const product = {
@@ -193,12 +190,15 @@ router.post("/product", isLoggedIn, (req, res) => {
     season_id: SEASON,
     user_id: req.user._id,
   };
-  Product.create(product)
+  await Product.create(product)
     .then((response) => {
       console.log("-----Create /product \n", response);
       res.redirect("/profile");
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      req.flash("error", "Error Creating Product");
+      res.status(500).redirect("/profile");
+    });
 });
 
 router.put("/product/:id", isLoggedIn, async (req, res) => {
@@ -207,13 +207,11 @@ router.put("/product/:id", isLoggedIn, async (req, res) => {
   const { id } = req.body;
   const findId = parseInt(req.params.id);
   try {
-    // Find and update the product by ID
     await Product.updateOne({ id, user_id: _id }, req.body);
-    // Render the edit page with the updated product
     res.redirect("/profile");
   } catch (error) {
-    console.error("Error updating product:", error);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Error Updating Product");
+    res.status(500).redirect("/profile");
   }
 });
 
@@ -223,13 +221,11 @@ router.delete("/product/:id", isLoggedIn, async (req, res) => {
   const { id } = req.body;
   const findId = parseInt(req.params.id);
   try {
-    // Find and update the product by ID
     await Product.deleteOne({ id, user_id: _id }, req.body);
-    // Render the edit page with the updated product
     res.redirect("/profile");
   } catch (error) {
-    console.error("Error updating product:", error);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Error Deleting Product");
+    res.status(500).redirect("/profile");
   }
 });
 

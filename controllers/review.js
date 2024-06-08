@@ -6,15 +6,15 @@ const mongoose = require("mongoose");
 const { Product } = require("../models");
 const { Review } = require("../models");
 
-// const isLoggedIn = require("./middleware/isLoggedIn");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
 router.get("/", isLoggedIn, async (req, res) => {
   const { name, email, phone, _id } = req.user;
   try {
     // Aggregate query to find the latest 4 products without reviews
+    // Lookup reviews for each product
+    // Match products that have no reviews
     const latestProductsWithoutReviews = await Product.aggregate([
-      // Lookup reviews for each product
       {
         $lookup: {
           from: "reviews",
@@ -23,33 +23,25 @@ router.get("/", isLoggedIn, async (req, res) => {
           as: "reviews",
         },
       },
-      // Match products that have no reviews
+
       {
         $match: { reviews: { $eq: [] } },
       },
-      // Sort by creation date in descending order
+
       {
         $sort: { createdAt: -1 },
       },
-      // Limit to 4 products
+
       {
         $limit: 4,
       },
     ]);
-
-    // Log the fetched products to ensure they are correctly retrieved
-    console.log(
-      "Latest Products Without Reviews:",
-      latestProductsWithoutReviews
-    );
-
-    // Render the review template with user details and the latest products
     res.render("review", {
       products: latestProductsWithoutReviews,
     });
   } catch (error) {
-    console.error("Error fetching latest products without reviews:", error);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Error fetching latest products without reviews");
+    res.status(500).redirect("/profile");
   }
 });
 
@@ -62,8 +54,8 @@ router.get("/product/:id", isLoggedIn, async (req, res) => {
       product: foundProduct,
     });
   } catch (error) {
-    console.error("Error product to review review:", error);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Error product to review review");
+    res.status(500).redirect("/profile");
   }
 });
 router.get("/product/:id/create", isLoggedIn, async (req, res) => {
@@ -73,8 +65,8 @@ router.get("/product/:id/create", isLoggedIn, async (req, res) => {
     const foundProduct = await Product.findOne({ id: parseInt(id) });
     res.render("review/create", { product: foundProduct, customer_id: _id });
   } catch (error) {
-    console.error("Error product to review review:", error);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Error product to review review");
+    res.status(500).redirect("/profile");
   }
 });
 router.get("/product/:id/edit", isLoggedIn, async (req, res) => {
@@ -82,28 +74,25 @@ router.get("/product/:id/edit", isLoggedIn, async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Fetch the product by its numeric ID
     const updatedProduct = await Product.findOne({ id: parseInt(id) });
 
     if (!updatedProduct) {
-      return res.status(404).send("Product not found");
+      req.flash("error", "Error product not found");
+      return res.status(404).redirect("/profile");
     }
-
-    // Find the review by product ID and customer ID
     const updatedReview = await Review.findOne({
       product_id: updatedProduct._id,
       customer_id: _id,
     });
 
-    // Render the edit page with the updated product and review
     res.render("review/edit", {
       product: updatedProduct,
       review: updatedReview,
       customer_id: _id,
     });
   } catch (error) {
-    console.error("Error fetching product for edit:", error);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Error fetching product for edit");
+    res.status(500).redirect("/profile");
   }
 });
 router.get("/product/:id/delete", isLoggedIn, async (req, res) => {
@@ -111,28 +100,25 @@ router.get("/product/:id/delete", isLoggedIn, async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Fetch the product by its numeric ID
     const updatedProduct = await Product.findOne({ id: parseInt(id) });
 
     if (!updatedProduct) {
-      return res.status(404).send("Product not found");
+      req.flash("error", "Error product not found");
+      return res.status(404).redirect("/profile");
     }
 
-    // Find the review by product ID and customer ID
     const updatedReview = await Review.findOne({
       product_id: updatedProduct._id,
       customer_id: _id,
     });
-
-    // Render the edit page with the updated product and review
     res.render("review/delete", {
       product: updatedProduct,
       review: updatedReview,
       customer_id: _id,
     });
   } catch (error) {
-    console.error("Error fetching product for edit:", error);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Error fetching product for edit");
+    res.status(500).redirect("/profile");
   }
 });
 
@@ -143,33 +129,29 @@ router.post("/product", isLoggedIn, async (req, res) => {
     await newReview.save();
     res.redirect("/profile");
   } catch (error) {
-    console.error("Error creating product:", error);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Error creating product");
+    res.status(500).redirect("/profile");
   }
 });
 
 router.put("/product/:id", isLoggedIn, async (req, res) => {
   console.log("-----Update Review--------- \n", req.body);
-  const { id } = req.params; // Extract ID from URL
+  const { id } = req.params;
   const { name, email, phone, _id } = req.user;
 
   try {
-    // Find and update the review by product_id and customer_id
     const result = await Review.updateOne(
       { product_id: req.body.product_id, customer_id: _id },
       req.body
     );
 
     if (result.nModified === 0) {
-      // Handle case where no documents were modified
       console.log("No reviews were updated.");
     }
-
-    // Redirect to profile after updating
     res.redirect("/profile");
   } catch (error) {
-    console.error("Error updating review:", error);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Internal Server Error");
+    res.status(500).redirect("/profile");
   }
 });
 
@@ -184,13 +166,13 @@ router.delete("/product/:id", isLoggedIn, async (req, res) => {
     });
 
     if (result.deletedCount === 0) {
-      console.error("Error deleting review: No review found");
-      return res.status(404).send("Review not found");
+      req.flash("error", "Error deleting review, No review found");
+      return res.status(404).redirect("/profile");
     }
     res.redirect("/profile");
   } catch (error) {
-    console.error("Error updating product:", error);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Error updating product");
+    res.status(500).redirect("/profile");
   }
 });
 
